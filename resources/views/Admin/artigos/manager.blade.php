@@ -6,6 +6,7 @@
             <List
               v-bind:titulos="['#','titulo','Descrição']"
               v-bind:items="{{ $artigos }}"
+              v-bind:lista = "{{ $lista }}"
               detalhe="detalhe" editar="editar" excluir="{{ env('URI') }}"  token={{ csrf_token() }}>
             </List>
     </Painel>

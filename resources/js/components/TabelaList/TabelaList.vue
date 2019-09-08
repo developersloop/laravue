@@ -1,5 +1,6 @@
 <template>
     <div>
+        <Migalhas :lista="this.lista"/>
         <div class="form-inline" style="
              display:flex;
              flex-flow:row wrap;
@@ -49,7 +50,7 @@
 <script>
 import _ from 'lodash';
 export default {
-    props:['titulos','items','detalhe','editar','excluir','token','_method'],
+    props:['titulos','items','lista','detalhe','editar','excluir','token','_method'],
       data(){
           return{
               trash:'',

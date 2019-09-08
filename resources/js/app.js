@@ -25,6 +25,8 @@ Vue.component('Painel',require('./components/Painel/PainelComponent.vue').defaul
 Vue.component('Card',require('./components/Cards/CardComponent.vue').default)
 Vue.component('Grid',require('./components/Grid/GridComponent.vue').default)
 Vue.component('List',require('./components/TabelaList/TabelaList.vue').default)
+Vue.component('Migalhas',require('./components/Migalhas/Migalhas.vue').default)
+
 const app = new Vue({
     el: '#app',
 });
