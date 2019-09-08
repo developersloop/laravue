@@ -23,7 +23,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('Navbar',require('./components/Navbar/Navbar.vue').default)
 Vue.component('Painel',require('./components/Painel/PainelComponent.vue').default)
 Vue.component('Card',require('./components/Cards/CardComponent.vue').default)
-
+Vue.component('Grid',require('./components/Grid/GridComponent.vue').default)
+Vue.component('List',require('./components/TabelaList/TabelaList.vue').default)
 const app = new Vue({
     el: '#app',
 });
