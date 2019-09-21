@@ -5,7 +5,7 @@
              display:flex;
              flex-flow:row wrap;
              justify-content:space-arround">
-            <a href="#">Criar</a>
+            <a v-bind:href="criar">Criar</a>
             <div class="form-group pull-right" style="margin-left:450px;">
                  <input type="search" placeholder="Digite sua busca" class="form-control"
                   name="search"
@@ -18,13 +18,15 @@
         <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                         <th v-on:click="orderColumn(title,index)" v-for="(title,index) in titulos">{{ title }}</th>
+                         <th v-on:click="orderColumn(title,index)" v-for="(title,index) in titulos" :key="title.id">{{ title }}</th>
                          <th v-if="detalhe || editar || excluir">Ação</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item,index) in search" :key="item.id">
-                        <td v-for="dt in item" :key= dt.id>{{ dt }}</td>
+                    <tr v-for="(item,index) in items[0]" :key="item.id">
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.titulo }}</td>
+                        <td>{{ item.descricao }}</td>
 
                         <td v-if="detalhe || editar || excluir">
                              <form v-bind:id ="item.id" v-if="excluir && token" v-bind:action="trash" method="post">
@@ -49,17 +51,32 @@
 
 <script>
 import _ from 'lodash';
+import { mapActions, mapMutation,mapGetters } from 'vuex';
 export default {
-    props:['titulos','items','lista','detalhe','editar','excluir','token','_method'],
+    props:['titulos','lista','detalhe','editar','criar','excluir','token','_method'],
       data(){
           return{
               trash:'',
               bc:'',
               order:'asc',
               nameColumn:'',
+              items:[],
           }
       },
+      mounted(){
+          this.getMounted();
+      },
       methods:{
+          ...mapActions('Artigos',['getAll']),
+          ...mapGetters('Artigos',['artigos']),
+           getMounted(){
+               let data = this.getAll();
+               const items = this.items;
+               console.log(this.artigos());
+              this.items.push(this.artigos());
+
+
+           },
            handleSubmit:function(index){
                 this.trash = `${this.excluir}/${index}`;
                localStorage.setItem('a',this.trash)
@@ -87,17 +104,17 @@ export default {
       },
       computed:{
           search:function(){
-
+            //  console.log('adad' + this.items);
               let busca = this.bc;
               let data = this.items;
-            //   console.log(this.order);
 
+            //    console.log(data)
             // ORDENACAO
               if(this.order === 'asc' || this.order === 'desc'){
                      return _.orderBy(data,this.nameColumn, this.order)
               }
               return data.filter(res => {
-                   if(res.titulo.toLowerCase().indexOf(busca.toLowerCase()) >= 0){
+                   if(res.titulo.toLowerCase().indexOf(busca.toLowerCase().indexOf()) >= 0){
                        return true;
                    }
                    return false;

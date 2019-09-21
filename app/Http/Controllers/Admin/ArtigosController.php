@@ -36,7 +36,7 @@ class ArtigosController extends Controller
      */
     public function create()
     {
-        //
+          return view('Admin.artigos.create');
     }
 
     /**
