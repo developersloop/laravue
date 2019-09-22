@@ -17,6 +17,7 @@ class CreateArtigosTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo');
             $table->string('descricao');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

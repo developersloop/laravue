@@ -1,10 +1,12 @@
-var {getArtigos} = require('../Function/artigos');
+var {getArtigos,Update} = require('../Function/artigos');
 const ARTIGOS  = 'ARTIGOS';
+const MESSAGE = 'MESSAGE';
 import axios from 'axios';
 const URI = 'http://localhost:8000/api/search';
 
 const state = {
-    items:[]
+    items:[],
+    message:''
 }
 
 const mutations = {
@@ -13,6 +15,11 @@ const mutations = {
         params[0].forEach(element => {
             state.items.push(element)
         });
+
+    },
+
+    [MESSAGE](state, ...params){
+         state.message = params[0].error;
 
     }
 }
@@ -25,6 +32,16 @@ const actions = {
         console.log('Fetch Error :-S', err);
       });
 
+    },
+
+    updateArtigos({commit},data){
+       Update(data)
+                .then(data => {
+                         commit(MESSAGE,data.data);
+
+                })
+                .catch(err => console.log(err));
+
     }
 }
 
@@ -32,6 +49,10 @@ const getters = {
        artigos: () => {
         //    console.log(state.items[0]);
            return state.items;
+       },
+
+       message:() => {
+            return state.message;
        }
 }
 

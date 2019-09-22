@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div v-if="message" class="alert alert-success" role="alert" id="message">
+            Atualizado com sucesso!
+        </div>
         <Migalhas :lista="this.lista"/>
         <div class="form-inline" style="
              display:flex;
@@ -34,7 +37,7 @@
                                  <input type="hidden" name="_token" v-bind:value="token">
 
                                  <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
-                                 <a v-if="editar"  v-bind:href="editar">Editar</a>&nbsp;|
+                                 <a href='http://localhost:8000/admin/artigos/1/edit'>Editar</a>&nbsp;|
                                  <a href="#" v-on:click="handleSubmit(item.id)">Excluir</a>&nbsp;
                              </form>
                               <span v-if="!token">
@@ -46,11 +49,13 @@
                     </tr>
                 </tbody>
             </table>
+
     </div>
 </template>
 
 <script>
 import _ from 'lodash';
+import $ from 'jquery';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
 export default {
     props:['titulos','lista','detalhe','editar','criar','excluir','token','_method'],
@@ -61,10 +66,21 @@ export default {
               order:'asc',
               nameColumn:'',
               items:[],
+              message:''
           }
       },
       mounted(){
           this.getMounted();
+          this.message = localStorage.getItem('update');
+          var id = document.getElementById('message');
+
+          if(this.message != null){
+                // esconde message apos 5 segundos
+            setTimeout(function () {
+            $('#message').hide();
+            localStorage.removeItem('update');
+            }, 2500);
+          }
       },
       methods:{
           ...mapActions('Artigos',['getAll']),

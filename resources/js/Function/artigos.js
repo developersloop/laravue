@@ -16,6 +16,13 @@ const URI = 'http://localhost:8000/api/search';
 
 }
 
+export const Update = function(data){
+    const id = data.id;
+   return axios.put(`http://localhost:8000/api/update/${id}`,data)
+
+}
+
+
 
 
 

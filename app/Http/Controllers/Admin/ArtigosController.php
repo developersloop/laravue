@@ -17,7 +17,8 @@ class ArtigosController extends Controller
      */
     public function index()
     {
-        $artigos = DB::table('artigos')->select('id','titulo','descricao')->get();
+        $artigos = DB::table('artigos')->select('*')->get();
+        // dd($artigos);
         $lista = json_encode([
             ["id"=> 1, "titulo"=>"Home","url"=>route('home')],
             ["id" => 2, "titulo" =>"Lista de compras","url"=>""]
@@ -50,46 +51,23 @@ class ArtigosController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
-        //
+
+        $data = DB::table('artigos')
+                   ->where('id',$id)
+                   ->get();
+
+         return view('Admin.artigos.edit',compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         // dd($id);

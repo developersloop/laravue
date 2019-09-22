@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ArtigosController {
@@ -17,6 +18,18 @@ class ArtigosController {
 
         return json_encode($artigos);
     }
+
+    public function update(Request $request, $id)
+    {
+        $inputs = $request->all();
+        DB::table('artigos')
+            ->where('id',$id)
+            ->update($inputs);
+
+        return ['error'=>false, 'message' => 'Atualizado com Sucesso'];
+    }
+
+
 }
 
 

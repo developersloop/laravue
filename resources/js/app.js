@@ -16,7 +16,7 @@ Vue.component('Grid',require('./components/Grid/GridComponent.vue').default)
 Vue.component('List',require('./components/TabelaList/TabelaList.vue').default)
 Vue.component('Migalhas',require('./components/Migalhas/Migalhas.vue').default)
 Vue.component('Formulario',require('./components/Formulario/Formulario.vue').default)
-// Vue.component('Modal',require('./components/Modal/Modal.vue').default)
+Vue.component('Editar',require('./components/Crud/Edit.vue').default)
 
 
 
