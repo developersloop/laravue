@@ -37,7 +37,7 @@
                                  <input type="hidden" name="_token" v-bind:value="token">
 
                                  <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
-                                 <a href='http://localhost:8000/admin/artigos/1/edit'>Editar</a>&nbsp;|
+                                 <a href="#" v-on:click="dispatchEdit(item.id)">Editar</a>&nbsp;|
                                  <a href="#" v-on:click="handleSubmit(item.id)">Excluir</a>&nbsp;
                              </form>
                               <span v-if="!token">
@@ -92,6 +92,10 @@ export default {
               this.items.push(this.artigos());
 
 
+           },
+
+           dispatchEdit(id){
+               window.location.href = `http://localhost:8000/admin/artigos/${id}/edit`;
            },
            handleSubmit:function(index){
                 this.trash = `${this.excluir}/${index}`;

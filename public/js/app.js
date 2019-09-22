@@ -2308,6 +2308,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       console.log(this.artigos());
       this.items.push(this.artigos());
     },
+    dispatchEdit: function dispatchEdit(id) {
+      window.location.href = "http://localhost:8000/admin/artigos/".concat(id, "/edit");
+    },
     handleSubmit: function handleSubmit(index) {
       this.trash = "".concat(this.excluir, "/").concat(index);
       localStorage.setItem('a', this.trash);
@@ -38976,9 +38979,11 @@ var render = function() {
                             _c(
                               "a",
                               {
-                                attrs: {
-                                  href:
-                                    "http://localhost:8000/admin/artigos/1/edit"
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.dispatchEdit(item.id)
+                                  }
                                 }
                               },
                               [_vm._v("Editar")]
