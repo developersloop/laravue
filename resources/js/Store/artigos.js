@@ -1,4 +1,4 @@
-var {getArtigos,Update,Store} = require('../Function/artigos');
+var {getArtigos,Update,Store,Trash} = require('../Function/artigos');
 const ARTIGOS  = 'ARTIGOS';
 const MESSAGE = 'MESSAGE';
 const ERR = 'ERR';
@@ -58,6 +58,16 @@ const actions = {
                 })
                 .catch(err => console.log(err));
 
+    },
+
+    delete({commit},id){
+        Trash(id)
+        .then(data => {
+                 commit(MESSAGE,data.data);
+                 window.location.href  = 'http://localhost:8000/admin/artigos'
+
+        })
+        .catch(err => console.log(err));
     }
 }
 

@@ -2266,7 +2266,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2331,6 +2333,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['titulos', 'lista', 'detalhe', 'editar', 'criar', 'excluir', 'token', '_method'],
   data: function data() {
@@ -2360,7 +2363,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     localStorage.removeItem('mensagem');
     localStorage.removeItem('error');
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])('Artigos', ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])('Artigos', ['artigos', 'message']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapActions"])('Artigos', ['getAll', 'delete']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])('Artigos', ['artigos']), {
     //   ...mapGetters('Artigos',['message']),
     getMounted: function getMounted() {
       var data = this.getAll();
@@ -2371,10 +2374,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     dispatchEdit: function dispatchEdit(id) {
       window.location.href = "http://localhost:8000/admin/artigos/".concat(id, "/edit");
     },
-    handleSubmit: function handleSubmit(index) {
-      this.trash = "".concat(this.excluir, "/").concat(index);
-      localStorage.setItem('a', this.trash);
-      document.getElementById(index).submit();
+    Excluir: function Excluir(index) {
+      this["delete"](index);
     },
     orderColumn: function orderColumn(title, index) {
       var prefix = this.order == 'asc' ? 'desc' : this.order == 'desc' ? 'asc' : 'desc';
@@ -39117,7 +39118,7 @@ var render = function() {
                                 attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
-                                    return _vm.handleSubmit(item.id)
+                                    return _vm.Excluir(item.id)
                                   }
                                 }
                               },
@@ -39126,29 +39127,6 @@ var render = function() {
                             _vm._v(" \n                         ")
                           ]
                         )
-                      : _vm._e(),
-                    _vm._v(" "),
-                    !_vm.token
-                      ? _c("span", [
-                          _vm.detalhe
-                            ? _c("a", { attrs: { href: _vm.detalhe } }, [
-                                _vm._v("Detalhe")
-                              ])
-                            : _vm._e(),
-                          _vm._v("  |\n                                 "),
-                          _vm.editar
-                            ? _c("a", { attrs: { href: _vm.editar } }, [
-                                _vm._v("Editar")
-                              ])
-                            : _vm._e(),
-                          _vm._v(" |\n                                 "),
-                          _vm.excluir
-                            ? _c("a", { attrs: { href: _vm.excluir } }, [
-                                _vm._v("Excluir")
-                              ])
-                            : _vm._e(),
-                          _vm._v(" \n                          ")
-                        ])
                       : _vm._e()
                   ])
                 : _vm._e()
@@ -52339,7 +52317,7 @@ module.exports = function(module) {
 /*!******************************************!*\
   !*** ./resources/js/Function/artigos.js ***!
   \******************************************/
-/*! exports provided: getArtigos, Update, Store */
+/*! exports provided: getArtigos, Update, Store, Trash */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52347,6 +52325,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getArtigos", function() { return getArtigos; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Update", function() { return Update; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Store", function() { return Store; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Trash", function() { return Trash; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -52368,6 +52347,9 @@ var Update = function Update(data) {
 };
 var Store = function Store(data) {
   return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://localhost:8000/api/artigos/store", data);
+};
+var Trash = function Trash(id) {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8000/api/artigos/delete/".concat(id));
 };
 
 /***/ }),
@@ -52391,7 +52373,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var _require = __webpack_require__(/*! ../Function/artigos */ "./resources/js/Function/artigos.js"),
     getArtigos = _require.getArtigos,
     Update = _require.Update,
-    Store = _require.Store;
+    Store = _require.Store,
+    Trash = _require.Trash;
 
 var ARTIGOS = 'ARTIGOS';
 var MESSAGE = 'MESSAGE';
@@ -52442,6 +52425,15 @@ var actions = {
   updateArtigos: function updateArtigos(_ref3, data) {
     var commit = _ref3.commit;
     Update(data).then(function (data) {
+      commit(MESSAGE, data.data);
+      window.location.href = 'http://localhost:8000/admin/artigos';
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  },
+  "delete": function _delete(_ref4, id) {
+    var commit = _ref4.commit;
+    Trash(id).then(function (data) {
       commit(MESSAGE, data.data);
       window.location.href = 'http://localhost:8000/admin/artigos';
     })["catch"](function (err) {

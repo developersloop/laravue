@@ -26,6 +26,10 @@ export const Store = function(data){
       return axios.post(`http://localhost:8000/api/artigos/store`,data)
 }
 
+export const Trash = function(id){
+    return axios.get(`http://localhost:8000/api/artigos/delete/${id}`)
+}
+
 
 
 

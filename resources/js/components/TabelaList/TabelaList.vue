@@ -38,13 +38,13 @@
 
                                  <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
                                  <a href="#" v-on:click="dispatchEdit(item.id)">Editar</a>&nbsp;|
-                                 <a href="#" v-on:click="handleSubmit(item.id)">Excluir</a>&nbsp;
+                                 <a href="#" v-on:click="Excluir(item.id)">Excluir</a>&nbsp;
                              </form>
-                              <span v-if="!token">
+                              <!-- <span v-if="!token">
                                      <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
                                      <a v-if="editar"  v-bind:href="editar">Editar</a>&nbsp;|
                                      <a v-if="excluir" v-bind:href="excluir">Excluir</a>&nbsp;
-                              </span>
+                              </span> -->
                         </td>
                     </tr>
                 </tbody>
@@ -56,6 +56,7 @@
 <script>
 import _ from 'lodash';
 import $ from 'jquery';
+import axios from 'axios';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
 export default {
     props:['titulos','lista','detalhe','editar','criar','excluir','token','_method'],
@@ -85,8 +86,8 @@ export default {
         localStorage.removeItem('error');
       },
       methods:{
-          ...mapActions('Artigos',['getAll']),
-          ...mapGetters('Artigos',['artigos','message']),
+          ...mapActions('Artigos',['getAll','delete']),
+          ...mapGetters('Artigos',['artigos']),
         //   ...mapGetters('Artigos',['message']),
            getMounted(){
                let data = this.getAll();
@@ -100,10 +101,10 @@ export default {
            dispatchEdit(id){
                window.location.href = `http://localhost:8000/admin/artigos/${id}/edit`;
            },
-           handleSubmit:function(index){
-                this.trash = `${this.excluir}/${index}`;
-               localStorage.setItem('a',this.trash)
-               document.getElementById(index).submit();
+           Excluir:function(index){
+
+               this.delete(index);
+
            },
 
            orderColumn(title,index){

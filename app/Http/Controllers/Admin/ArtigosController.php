@@ -17,7 +17,7 @@ class ArtigosController extends Controller
      */
     public function index()
     {
-        $artigos = DB::table('artigos')->select('*')->get();
+        $artigos = DB::table('artigos')->whereNull('deleted_at')->select('*')->get();
         // dd($artigos);
         $lista = json_encode([
             ["id"=> 1, "titulo"=>"Home","url"=>route('home')],
