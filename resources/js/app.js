@@ -8,6 +8,7 @@ import store  from './Store/index';
 import strict from './Store/index'
 
 
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('Navbar',require('./components/Navbar/Navbar.vue').default)
 Vue.component('Painel',require('./components/Painel/PainelComponent.vue').default)

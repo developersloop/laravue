@@ -17,6 +17,7 @@ class ArtigosController extends Controller
      */
     public function index()
     {
+
         $lista = json_encode([
             ["id"=> 1, "titulo"=>"Home","url"=>route('home')],
             ["id" => 2, "titulo" =>"Lista de compras","url"=>""]

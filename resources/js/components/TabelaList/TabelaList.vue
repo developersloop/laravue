@@ -103,6 +103,7 @@ export default {
            },
            Excluir:function(index,event){
                event.preventDefault();
+
                this.delete(index);
 
            },
