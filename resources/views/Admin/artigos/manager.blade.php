@@ -7,7 +7,7 @@
               v-bind:titulos="['#','titulo','Descrição']"
               v-bind:items="{{ $artigos }}"
               v-bind:lista = "{{ $lista }}"
-              detalhe="detalhe" editar="{{ route('artigos.edit',[1]) }}" excluir="{{ env('URI') }}" criar="{{ route('artigos.create') }}"  token={{ csrf_token() }}>
+              detalhe="{{ route('artigos.detail') }}" editar="{{ route('artigos.edit',[1]) }}" excluir="{{ env('URI') }}" criar="{{ route('artigos.create') }}"  token={{ csrf_token() }}>
             </List>
     </Painel>
 </Grid>

@@ -63,7 +63,7 @@ import { mapActions, mapGetters} from 'vuex';
 
          methods:{
               ...mapActions('Artigos',['updateArtigos']),
-              ...mapGetters('Artigos',['message']),
+              ...mapGetters('Artigos',['error']),
              onSubmit(){
                   let id = this.id;
                   let titulo = this.titulo;
@@ -79,13 +79,6 @@ import { mapActions, mapGetters} from 'vuex';
 
                 this.updateArtigos(data);
 
-                console.log(this.message())
-
-                if(this.message() === false){
-                    localStorage.setItem('update',true);
-                    window.location.href  = 'http://localhost:8000/admin/artigos';
-
-                }
              }
          }
     }

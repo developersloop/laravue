@@ -48,13 +48,14 @@ class ArtigosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
     }
 
 
     public function show($id)
     {
-        //
+         return view('Admin.artigos.show');
     }
 
 

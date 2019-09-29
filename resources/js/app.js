@@ -17,6 +17,7 @@ Vue.component('List',require('./components/TabelaList/TabelaList.vue').default)
 Vue.component('Migalhas',require('./components/Migalhas/Migalhas.vue').default)
 Vue.component('Formulario',require('./components/Formulario/Formulario.vue').default)
 Vue.component('Editar',require('./components/Crud/Edit.vue').default)
+Vue.component('Details',require('./components/Details/details.vue').default)
 
 
 

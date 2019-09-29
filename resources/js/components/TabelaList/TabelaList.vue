@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div v-if="message" class="alert alert-success" role="alert" id="message">
-            Atualizado com sucesso!
+        <div v-if="err" class="alert alert-success" role="alert" id="message">
+           {{ mss }}
         </div>
         <Migalhas :lista="this.lista"/>
         <div class="form-inline" style="
@@ -66,25 +66,28 @@ export default {
               order:'asc',
               nameColumn:'',
               items:[],
-              message:''
+              mss:'',
+              err:'',
           }
       },
       mounted(){
           this.getMounted();
-          this.message = localStorage.getItem('update');
           var id = document.getElementById('message');
-
-          if(this.message != null){
+          this.err = localStorage.getItem('error');
+        if(this.err){
+           this.mss = localStorage.getItem('mensagem');
                 // esconde message apos 5 segundos
-            setTimeout(function () {
-            $('#message').hide();
-            localStorage.removeItem('update');
-            }, 2500);
-          }
+                setTimeout(function () {
+                $('#message').hide();
+                }, 2500);
+        }
+        localStorage.removeItem('mensagem')
+        localStorage.removeItem('error');
       },
       methods:{
           ...mapActions('Artigos',['getAll']),
-          ...mapGetters('Artigos',['artigos']),
+          ...mapGetters('Artigos',['artigos','message']),
+        //   ...mapGetters('Artigos',['message']),
            getMounted(){
                let data = this.getAll();
                const items = this.items;

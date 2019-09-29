@@ -19,5 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['namespace' => 'Api'], function () {
    Route::get('/search', 'ArtigosController@search');
-   Route::put('/update/{id}', 'ArtigosController@update');
+   Route::put('/artigos/update/{id}', 'ArtigosController@update');
+   Route::post('/artigos/store','ArtigosController@store');
 });

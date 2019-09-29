@@ -1,12 +1,14 @@
-var {getArtigos,Update} = require('../Function/artigos');
+var {getArtigos,Update,Store} = require('../Function/artigos');
 const ARTIGOS  = 'ARTIGOS';
 const MESSAGE = 'MESSAGE';
+const ERR = 'ERR';
 import axios from 'axios';
 const URI = 'http://localhost:8000/api/search';
 
 const state = {
     items:[],
-    message:''
+    message:'',
+    err:''
 }
 
 const mutations = {
@@ -19,9 +21,12 @@ const mutations = {
     },
 
     [MESSAGE](state, ...params){
-         state.message = params[0].error;
+         state.message = params[0].message;
+         state.err = params[0].error;
+         localStorage.setItem('mensagem',state.message);
+         localStorage.setItem('error',state.err);
 
-    }
+    },
 }
 
 const actions = {
@@ -34,10 +39,21 @@ const actions = {
 
     },
 
+    storeArtigos({commit},data){
+        Store(data)
+             .then(data => {
+                   commit(MESSAGE,data.data);
+                   window.location.href  = 'http://localhost:8000/admin/artigos'
+             })
+             .catch(err => console.log(err));
+    },
+
+
     updateArtigos({commit},data){
        Update(data)
                 .then(data => {
                          commit(MESSAGE,data.data);
+                         window.location.href  = 'http://localhost:8000/admin/artigos'
 
                 })
                 .catch(err => console.log(err));
@@ -53,6 +69,10 @@ const getters = {
 
        message:() => {
             return state.message;
+       },
+
+       error:() => {
+           return state.err;
        }
 }
 

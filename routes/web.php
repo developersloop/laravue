@@ -22,6 +22,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
          Route::resource('artigos', 'ArtigosController');
+         Route::get('/artigos/detail','ArtigosController@show')->name('artigos.detail');
     });
 });
 
