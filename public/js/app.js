@@ -2374,7 +2374,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     dispatchEdit: function dispatchEdit(id) {
       window.location.href = "http://localhost:8000/admin/artigos/".concat(id, "/edit");
     },
-    Excluir: function Excluir(index) {
+    Excluir: function Excluir(index, event) {
+      event.preventDefault();
       this["delete"](index);
     },
     orderColumn: function orderColumn(title, index) {
@@ -39118,7 +39119,8 @@ var render = function() {
                                 attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
-                                    return _vm.Excluir(item.id)
+                                    $event.preventDefault()
+                                    return _vm.Excluir(item.id, $event)
                                   }
                                 }
                               },

@@ -38,7 +38,7 @@
 
                                  <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
                                  <a href="#" v-on:click="dispatchEdit(item.id)">Editar</a>&nbsp;|
-                                 <a href="#" v-on:click="Excluir(item.id)">Excluir</a>&nbsp;
+                                 <a href="#" v-on:click.prevent="Excluir(item.id,$event)">Excluir</a>&nbsp;
                              </form>
                               <!-- <span v-if="!token">
                                      <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
@@ -101,8 +101,8 @@ export default {
            dispatchEdit(id){
                window.location.href = `http://localhost:8000/admin/artigos/${id}/edit`;
            },
-           Excluir:function(index){
-
+           Excluir:function(index,event){
+               event.preventDefault();
                this.delete(index);
 
            },
