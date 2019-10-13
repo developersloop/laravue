@@ -41,6 +41,19 @@ class ArtigosController {
         return ['error'=>false, 'message' => 'Criado com Sucesso'];
     }
 
+    public function show($id)
+    {
+        $find_artigos = [];
+        $find_artigos = DB::table('artigos')
+                        ->where(function($query) use ($id){
+                             $query->where('id',$id)
+                                    ->whereNull('deleted_at');
+                        })
+                        ->get();
+
+        return $find_artigos>toArray();
+    }
+
     public function delete($id)
     {
         $findArtigos = DB::table('artigos')

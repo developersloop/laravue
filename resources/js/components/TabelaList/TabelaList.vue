@@ -36,7 +36,7 @@
                                  <input type="hidden" name="_method" value="DELETE">
                                  <input type="hidden" name="_token" v-bind:value="token">
 
-                                 <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
+                                 <a href="#" v-on:click="details(item.id,$event)" data-toggle="modal" data-target="#modalDetails">Detalhe</a> &nbsp;|
                                  <a href="#" v-on:click="dispatchEdit(item.id)">Editar</a>&nbsp;|
                                  <a href="#" v-on:click.prevent="Excluir(item.id,$event)">Excluir</a>&nbsp;
                              </form>
@@ -49,16 +49,21 @@
                     </tr>
                 </tbody>
             </table>
+            <Details nameModal="modalDetails" titulo="Detalhes" v-bind:show="itensShow"/>
+</div>
 
-    </div>
 </template>
 
 <script>
 import _ from 'lodash';
 import $ from 'jquery';
 import axios from 'axios';
+import Details from '../Details/details';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
 export default {
+    components:{
+         'Details':Details
+    },
     props:['titulos','lista','detalhe','editar','criar','excluir','token','_method'],
       data(){
           return{
@@ -69,6 +74,7 @@ export default {
               items:[],
               mss:'',
               err:'',
+              itensShow:[],
           }
       },
       mounted(){
@@ -92,8 +98,9 @@ export default {
            getMounted(){
                let data = this.getAll();
                const items = this.items;
-               console.log(this.artigos());
+            //    console.log(this.artigos());
               this.items.push(this.artigos());
+
 
 
            },
@@ -105,6 +112,21 @@ export default {
                event.preventDefault();
 
                this.delete(index);
+
+           },
+
+           details(id,event){
+              this.itensShow = [];
+                event.preventDefault();
+                let artigos =  JSON.parse(localStorage.getItem('artigos'));
+
+                 for (let index = 0; index < artigos.length; index++) {
+                    //  console.log(artigos[index].id);
+                     if(artigos[index].id === id){
+                         console.log(artigos[index]);
+                         this.itensShow.push(artigos[index]);
+                     }
+                 }
 
            },
 

@@ -30,6 +30,10 @@ export const Trash = function(id){
     return axios.get(`http://localhost:8000/api/artigos/delete/${id}`)
 }
 
+export const artigoShow = function(id){
+    return axios.get(`http://localhost:8000/api/artigos/show/${id}`)
+}
+
 
 
 

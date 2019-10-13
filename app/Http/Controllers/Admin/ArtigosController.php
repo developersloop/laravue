@@ -53,7 +53,12 @@ class ArtigosController extends Controller
 
     public function show($id)
     {
-         return view('Admin.artigos.show');
+
+         return view('Admin.artigos.show',
+                                          compact(
+                                                    'id'
+                                                 )
+        );
     }
 
 

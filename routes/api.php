@@ -22,4 +22,5 @@ Route::group(['namespace' => 'Api'], function () {
    Route::put('/artigos/update/{id}', 'ArtigosController@update');
    Route::post('/artigos/store','ArtigosController@store');
    Route::get('/artigos/delete/{id}','ArtigosController@delete');
+   Route::get('/artigos/show/{id}','ArtigosController@show');
 });

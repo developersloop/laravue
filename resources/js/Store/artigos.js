@@ -1,14 +1,16 @@
-var {getArtigos,Update,Store,Trash} = require('../Function/artigos');
+var {getArtigos,Update,Store,Trash,artigoShow} = require('../Function/artigos');
 const ARTIGOS  = 'ARTIGOS';
 const MESSAGE = 'MESSAGE';
 const ERR = 'ERR';
+const ARTIGOS_SHOW = 'ARTIGOS_SHOW';
 import axios from 'axios';
 const URI = 'http://localhost:8000/api/search';
 
 const state = {
     items:[],
     message:'',
-    err:''
+    err:'',
+    items_show:[],
 }
 
 const mutations = {
@@ -32,11 +34,20 @@ const mutations = {
 const actions = {
     getAll({commit}){
       getArtigos()
-      .then(data => {commit(ARTIGOS,data.data)})
+      .then(data => {
+                       {commit(ARTIGOS,data.data)}
+                       localStorage.setItem('artigos',JSON.stringify(data.data));
+                })
       .catch(function(err) {
         console.log('Fetch Error :-S', err);
       });
 
+    },
+
+    show({commit},id){
+        artigoShow(id)
+        .then(data => console.log(data))
+        .catch(err => console.log(err))
     },
 
     storeArtigos({commit},data){

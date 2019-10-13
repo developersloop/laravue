@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
- <Details titulo="teste card"/>
+<Details id="{{ $id }}"/>
 @endsection
