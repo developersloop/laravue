@@ -18,38 +18,23 @@
             </div>
         </div>
         <br>
-        <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                         <th v-on:click="orderColumn(title,index)" v-for="(title,index) in titulos" :key="title.id">{{ title }}</th>
-                         <th v-if="detalhe || editar || excluir">Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item,index) in items[0]" :key="item.id">
-                        <td>{{ item.id }}</td>
-                        <td>{{ item.titulo }}</td>
-                        <td>{{ item.descricao }}</td>
-
-                        <td v-if="detalhe || editar || excluir">
-                             <form v-bind:id ="item.id" v-if="excluir && token" v-bind:action="trash" method="post">
-                                 <input type="hidden" name="_method" value="DELETE">
-                                 <input type="hidden" name="_token" v-bind:value="token">
-
-                                 <a href="#" v-on:click="details(item.id,$event)" data-toggle="modal" data-target="#modalDetails">Detalhe</a> &nbsp;|
-                                 <a href="#" v-on:click="dispatchEdit(item.id)">Editar</a>&nbsp;|
-                                 <a href="#" v-on:click.prevent="Excluir(item.id,$event)">Excluir</a>&nbsp;
-                             </form>
-                              <!-- <span v-if="!token">
-                                     <a v-if="detalhe" v-bind:href="detalhe">Detalhe</a> &nbsp;|
-                                     <a v-if="editar"  v-bind:href="editar">Editar</a>&nbsp;|
-                                     <a v-if="excluir" v-bind:href="excluir">Excluir</a>&nbsp;
-                              </span> -->
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+          <b-table
+            id="my-table"
+            :items="search"
+            :per-page="per_page"
+            :current-page="current_page"
+         ></b-table>
             <Details nameModal="modalDetails" titulo="Detalhes" v-bind:show="itensShow"/>
+             <div v-if="rows > 1">
+                 <b-pagination
+                    v-model="current_page"
+                    :total-rows="rows"
+                    :per-page="2"
+                    aria-controls="my-table"
+                ></b-pagination>
+             </div>
+
+
 </div>
 
 </template>
@@ -75,10 +60,15 @@ export default {
               mss:'',
               err:'',
               itensShow:[],
+              current_page: 1,
+              per_page: 2,
+              rows:''
+
           }
       },
       mounted(){
           this.getMounted();
+        //   console.log(this.getMounted());
           var id = document.getElementById('message');
           this.err = localStorage.getItem('error');
         if(this.err){
@@ -92,18 +82,17 @@ export default {
         localStorage.removeItem('error');
       },
       methods:{
-          ...mapActions('Artigos',['getAll','delete']),
+          ...mapActions('Artigos',['getAll']),
           ...mapGetters('Artigos',['artigos']),
-        //   ...mapGetters('Artigos',['message']),
+        //   ...mapGetters('Artigos',['paginacao']),
            getMounted(){
                let data = this.getAll();
                const items = this.items;
-            //    console.log(this.artigos());
-              this.items.push(this.artigos());
-
-
+               this.items.push(this.artigos());
 
            },
+
+
 
            dispatchEdit(id){
                window.location.href = `http://localhost:8000/admin/artigos/${id}/edit`;
@@ -147,27 +136,37 @@ export default {
                      default:
                          break;
                  }
-           }
+           },
+
+
       },
       computed:{
           search:function(){
-            //  console.log('adad' + this.items);
               let busca = this.bc;
-              let data = this.items;
+              let data = this.items[0];
 
-            //    console.log(data)
-            // ORDENACAO
-              if(this.order === 'asc' || this.order === 'desc'){
-                     return _.orderBy(data,this.nameColumn, this.order)
+// // ?           ORDENACAO
+
+//               if(this.order === 'asc' || this.order === 'desc'){
+//                      return _.orderBy(data,this.nameColumn, this.order)
+//               }
+
+              if(busca === ''){
+                      this.rows = data.length;
+                    //   console.log(this.items[0].length)
+                      return data;
+
               }
-              return data.filter(res => {
-                   if(res.titulo.toLowerCase().indexOf(busca.toLowerCase().indexOf()) >= 0){
-                       return true;
-                   }
-                   return false;
-              })
+              else {
+                    return data[0].filter(res => {
+                        if(res.titulo === busca || res.descricao === busca){
+                            //  this.rows = data[0].length;
+                           return data[0];
+                       }
+                       return false;
+                  })
+              }
 
-              return data;
           }
       }
 }

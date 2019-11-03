@@ -7,6 +7,14 @@ import Vuex from 'vuex';
 import store  from './Store/index';
 import strict from './Store/index'
 
+Vue.use(require('vue-resource'));
+
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+Vue.use(BootstrapVue)
+
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);

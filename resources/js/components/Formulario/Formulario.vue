@@ -27,6 +27,9 @@
                                     placeholder="Enter Description">
                           </div>
                     </div>
+                    <div>
+                        <input type="hidden" name="acao" ref="acao">
+                    </div>
                       <div class="col-md-4">
                         <button type="submit" class="btn btn-primary">Criar</button>
                     </div>
@@ -51,10 +54,12 @@ export default {
          handleSubmit(){
              const titulo = this.$refs.titulo.value;
              const descricao  = this.$refs.descricao.value;
+             const Acao = this.$refs.acao.value;
 
              const data = {
                  titulo,
                  descricao,
+                 Acao
              }
 
             // chamando metodo store artigos vuex

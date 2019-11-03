@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-const URI = 'http://localhost:8000/api/search';
+// const URI = 'http://localhost:8000/api/search';
+
+
  export const getArtigos = function(){
+  const URI = 'http://localhost:8000/api/search';
     return axios.
     get(URI,{
       headers: {

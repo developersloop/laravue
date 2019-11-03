@@ -12,15 +12,17 @@ class ArtigosController {
 
     public function search()
     {
-        // $artigos = [];
+        $artigos = [];
         $artigos = DB::table('artigos')
                    ->select('id','titulo','descricao')
                    ->whereNull('deleted_at')
                    ->get();
 
+                return $artigos->toArray();
 
 
-        return json_encode($artigos);
+
+        // return response()->json($artigos);
     }
 
     public function update(Request $request, $id)
@@ -36,9 +38,13 @@ class ArtigosController {
     public function store(StoreArtigos $request)
     {
         $inputs = $request->all();
-        // dd($inputs);
-        Artigos::create($inputs);
-        return ['error'=>false, 'message' => 'Criado com Sucesso'];
+        $inputs['Acao'] = 'editar';
+        try {
+            Artigos::create($inputs);
+            return ['error'=>false, 'message' => 'Criado com Sucesso'];
+        } catch (\Throwable $th) {
+            return ['error' => true, 'message' => $th];
+        }
     }
 
     public function show($id)
