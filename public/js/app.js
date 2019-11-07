@@ -83185,9 +83185,6 @@ var getters = {
   },
   error: function error() {
     return state.err;
-  },
-  paginacao: function paginacao() {
-    return state.pg;
   }
 };
 var Artigos = {

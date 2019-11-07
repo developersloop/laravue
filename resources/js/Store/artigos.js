@@ -96,10 +96,6 @@ const getters = {
        error:() => {
            return state.err;
        },
-
-       paginacao:() => {
-           return state.pg;
-       }
 }
 
 
