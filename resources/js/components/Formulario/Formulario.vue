@@ -68,7 +68,7 @@ export default {
                if(this.message() === false){
                    console.log('adad');
                     localStorage.setItem('store',true);
-                    window.location.href  = 'http://localhost:8000/admin/artigos';
+                    window.location.href  = 'http://localhost:8081/admin/artigos';
 
                 }
 

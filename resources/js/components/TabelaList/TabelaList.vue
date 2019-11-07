@@ -23,8 +23,31 @@
             :items="search"
             :per-page="per_page"
             :current-page="current_page"
-         ></b-table>
-            <Details nameModal="modalDetails" titulo="Detalhes" v-bind:show="itensShow"/>
+            :fields="fields">
+             <template v-slot:cell(Acao)="row">
+                  <div>
+                        <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(row.item.id)">Editar</button>
+                        <button class="btn btn-secondary btn-sm" v-on:click.prevent="Excluir(row.item.id)">Excluir</button>
+                        <button class="btn btn-secondary btn-sm" v-on:click="edit(row.item)">Details</button>
+                        <div v-if="obj" class="container">
+                            <b-modal v-model="details" title="Detalhes">
+                                 <p>
+                                     <b>ID:</b>
+                                     {{obj.id}}
+                                  </p>
+                                 <p>
+                                     <b>Título:</b>
+                                     {{obj.titulo}}
+                                 </p>
+                                 <p>
+                                     <b>Descrição:</b>
+                                     {{obj.descricao}}
+                                 </p>
+                            </b-modal>
+                        </div>
+                  </div>
+             </template>
+         </b-table>
              <div v-if="rows > 1">
                  <b-pagination
                     v-model="current_page"
@@ -49,7 +72,7 @@ export default {
     components:{
          'Details':Details
     },
-    props:['titulos','lista','detalhe','editar','criar','excluir','token','_method'],
+    props:['titulos','lista','editar','criar','env','token','_method'],
       data(){
           return{
               trash:'',
@@ -62,13 +85,17 @@ export default {
               itensShow:[],
               current_page: 1,
               per_page: 2,
-              rows:''
+              rows:'',
+              fields: ['id', 'titulo', 'descricao','Acao'],
+              obj:{},
+              details:false
+
 
           }
       },
       mounted(){
           this.getMounted();
-        //   console.log(this.getMounted());
+          localStorage.setItem('env',this.env);
           var id = document.getElementById('message');
           this.err = localStorage.getItem('error');
         if(this.err){
@@ -83,8 +110,8 @@ export default {
       },
       methods:{
           ...mapActions('Artigos',['getAll']),
+          ...mapActions('Artigos',['delete']),
           ...mapGetters('Artigos',['artigos']),
-        //   ...mapGetters('Artigos',['paginacao']),
            getMounted(){
                let data = this.getAll();
                const items = this.items;
@@ -92,32 +119,17 @@ export default {
 
            },
 
-
-
            dispatchEdit(id){
-               window.location.href = `http://localhost:8000/admin/artigos/${id}/edit`;
+               window.location.href = `${this.env}/${id}/edit`
            },
-           Excluir:function(index,event){
-               event.preventDefault();
 
+           Excluir(index){
                this.delete(index);
-
            },
 
-           details(id,event){
-              this.itensShow = [];
-                event.preventDefault();
-                let artigos =  JSON.parse(localStorage.getItem('artigos'));
+           edit(obj = {}){this.obj = obj;this.details = true;},
 
-                 for (let index = 0; index < artigos.length; index++) {
-                    //  console.log(artigos[index].id);
-                     if(artigos[index].id === id){
-                         console.log(artigos[index]);
-                         this.itensShow.push(artigos[index]);
-                     }
-                 }
 
-           },
 
            orderColumn(title,index){
                let prefix = this.order == 'asc' ? 'desc' : (this.order == 'desc' ?  'asc' : 'desc');
@@ -145,23 +157,17 @@ export default {
               let busca = this.bc;
               let data = this.items[0];
 
-// // ?           ORDENACAO
-
-//               if(this.order === 'asc' || this.order === 'desc'){
-//                      return _.orderBy(data,this.nameColumn, this.order)
-//               }
+                this.rows = data != undefined ? data.length : '';
 
               if(busca === ''){
-                      this.rows = data.length;
-                    //   console.log(this.items[0].length)
                       return data;
 
               }
               else {
-                    return data[0].filter(res => {
+                    return data.filter(res => {
                         if(res.titulo === busca || res.descricao === busca){
                             //  this.rows = data[0].length;
-                           return data[0];
+                           return data;
                        }
                        return false;
                   })

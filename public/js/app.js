@@ -2123,7 +2123,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.message() === false) {
         console.log('adad');
         localStorage.setItem('store', true);
-        window.location.href = 'http://localhost:8000/admin/artigos';
+        window.location.href = 'http://localhost:8081/admin/artigos';
       }
     }
   })
@@ -2350,6 +2350,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2359,7 +2382,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   components: {
     'Details': _Details_details__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  props: ['titulos', 'lista', 'detalhe', 'editar', 'criar', 'excluir', 'token', '_method'],
+  props: ['titulos', 'lista', 'editar', 'criar', 'env', 'token', '_method'],
   data: function data() {
     return {
       trash: '',
@@ -2372,12 +2395,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       itensShow: [],
       current_page: 1,
       per_page: 2,
-      rows: ''
+      rows: '',
+      fields: ['id', 'titulo', 'descricao', 'Acao'],
+      obj: {},
+      details: false
     };
   },
   mounted: function mounted() {
-    this.getMounted(); //   console.log(this.getMounted());
-
+    this.getMounted();
+    localStorage.setItem('env', this.env);
     var id = document.getElementById('message');
     this.err = localStorage.getItem('error');
 
@@ -2392,32 +2418,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     localStorage.removeItem('mensagem');
     localStorage.removeItem('error');
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('Artigos', ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])('Artigos', ['artigos']), {
-    //   ...mapGetters('Artigos',['paginacao']),
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('Artigos', ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapActions"])('Artigos', ['delete']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_4__["mapGetters"])('Artigos', ['artigos']), {
     getMounted: function getMounted() {
       var data = this.getAll();
       var items = this.items;
       this.items.push(this.artigos());
     },
     dispatchEdit: function dispatchEdit(id) {
-      window.location.href = "http://localhost:8000/admin/artigos/".concat(id, "/edit");
+      window.location.href = "".concat(this.env, "/").concat(id, "/edit");
     },
-    Excluir: function Excluir(index, event) {
-      event.preventDefault();
+    Excluir: function Excluir(index) {
       this["delete"](index);
     },
-    details: function details(id, event) {
-      this.itensShow = [];
-      event.preventDefault();
-      var artigos = JSON.parse(localStorage.getItem('artigos'));
-
-      for (var index = 0; index < artigos.length; index++) {
-        //  console.log(artigos[index].id);
-        if (artigos[index].id === id) {
-          console.log(artigos[index]);
-          this.itensShow.push(artigos[index]);
-        }
-      }
+    edit: function edit() {
+      var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this.obj = obj;
+      this.details = true;
     },
     orderColumn: function orderColumn(title, index) {
       var prefix = this.order == 'asc' ? 'desc' : this.order == 'desc' ? 'asc' : 'desc';
@@ -2442,20 +2458,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: {
     search: function search() {
       var busca = this.bc;
-      var data = this.items[0]; // // ?           ORDENACAO
-      //               if(this.order === 'asc' || this.order === 'desc'){
-      //                      return _.orderBy(data,this.nameColumn, this.order)
-      //               }
+      var data = this.items[0];
+      this.rows = data != undefined ? data.length : '';
 
       if (busca === '') {
-        this.rows = data.length; //   console.log(this.items[0].length)
-
         return data;
       } else {
-        return data[0].filter(function (res) {
+        return data.filter(function (res) {
           if (res.titulo === busca || res.descricao === busca) {
             //  this.rows = data[0].length;
-            return data[0];
+            return data;
           }
 
           return false;
@@ -68136,16 +68148,110 @@ var render = function() {
           id: "my-table",
           items: _vm.search,
           "per-page": _vm.per_page,
-          "current-page": _vm.current_page
-        }
-      }),
-      _vm._v(" "),
-      _c("Details", {
-        attrs: {
-          nameModal: "modalDetails",
-          titulo: "Detalhes",
-          show: _vm.itensShow
-        }
+          "current-page": _vm.current_page,
+          fields: _vm.fields
+        },
+        scopedSlots: _vm._u([
+          {
+            key: "cell(Acao)",
+            fn: function(row) {
+              return [
+                _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary btn-sm",
+                      on: {
+                        click: function($event) {
+                          return _vm.dispatchEdit(row.item.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Editar")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary btn-sm",
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.Excluir(row.item.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Excluir")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-secondary btn-sm",
+                      on: {
+                        click: function($event) {
+                          return _vm.edit(row.item)
+                        }
+                      }
+                    },
+                    [_vm._v("Details")]
+                  ),
+                  _vm._v(" "),
+                  _vm.obj
+                    ? _c(
+                        "div",
+                        { staticClass: "container" },
+                        [
+                          _c(
+                            "b-modal",
+                            {
+                              attrs: { title: "Detalhes" },
+                              model: {
+                                value: _vm.details,
+                                callback: function($$v) {
+                                  _vm.details = $$v
+                                },
+                                expression: "details"
+                              }
+                            },
+                            [
+                              _c("p", [
+                                _c("b", [_vm._v("ID:")]),
+                                _vm._v(
+                                  "\n                                     " +
+                                    _vm._s(_vm.obj.id) +
+                                    "\n                                  "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _c("b", [_vm._v("Título:")]),
+                                _vm._v(
+                                  "\n                                     " +
+                                    _vm._s(_vm.obj.titulo) +
+                                    "\n                                 "
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("p", [
+                                _c("b", [_vm._v("Descrição:")]),
+                                _vm._v(
+                                  "\n                                     " +
+                                    _vm._s(_vm.obj.descricao) +
+                                    "\n                                 "
+                                )
+                              ])
+                            ]
+                          )
+                        ],
+                        1
+                      )
+                    : _vm._e()
+                ])
+              ]
+            }
+          }
+        ])
       }),
       _vm._v(" "),
       _vm.rows > 1
@@ -82939,29 +83045,29 @@ __webpack_require__.r(__webpack_exports__);
  // const URI = 'http://localhost:8000/api/search';
 
 var getArtigos = function getArtigos() {
-  var URI = 'http://localhost:8000/api/search';
+  var URI = 'http://localhost:8081/api/search';
   return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(URI, {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
     proxy: {
-      host: 'http://localhost:8080/',
+      host: 'http://localhost:8081/',
       port: 8080
     }
   }); //   return axios(URI)
 };
 var Update = function Update(data) {
   var id = data.id;
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("http://localhost:8000/api/artigos/update/".concat(id), data);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("http://localhost:8081/api/artigos/update/".concat(id), data);
 };
 var Store = function Store(data) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://localhost:8000/api/artigos/store", data);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://localhost:8081/api/artigos/store", data);
 };
 var Trash = function Trash(id) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8000/api/artigos/delete/".concat(id));
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8081/api/artigos/delete/".concat(id));
 };
 var artigoShow = function artigoShow(id) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8000/api/artigos/show/".concat(id));
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8081/api/artigos/show/".concat(id));
 };
 
 /***/ }),
@@ -82989,6 +83095,8 @@ var _require = __webpack_require__(/*! ../Function/artigos */ "./resources/js/Fu
     Trash = _require.Trash,
     artigoShow = _require.artigoShow;
 
+var strings = __webpack_require__(/*! ../Strings */ "./resources/js/Strings.js");
+
 var ARTIGOS = 'ARTIGOS';
 var MESSAGE = 'MESSAGE';
 var ERR = 'ERR';
@@ -83005,7 +83113,6 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, ARTIGOS, function 
     params[_key - 1] = arguments[_key];
   }
 
-  console.log(params);
   params[0].forEach(function (element) {
     state.items.push(element);
   });
@@ -83044,7 +83151,7 @@ var actions = {
     Store(data).then(function (data) {
       console.log(data);
       commit(MESSAGE, data.data);
-      window.location.href = 'http://localhost:8000/admin/artigos';
+      window.location.href = strings.uri;
     })["catch"](function (err) {
       return console.log(err);
     });
@@ -83053,7 +83160,7 @@ var actions = {
     var commit = _ref4.commit;
     Update(data).then(function (data) {
       commit(MESSAGE, data.data);
-      window.location.href = 'http://localhost:8000/admin/artigos';
+      window.location.href = strings.uri;
     })["catch"](function (err) {
       return console.log(err);
     });
@@ -83062,7 +83169,7 @@ var actions = {
     var commit = _ref5.commit;
     Trash(id).then(function (data) {
       commit(MESSAGE, data.data);
-      window.location.href = 'http://localhost:8000/admin/artigos';
+      window.location.href = strings.uri;
     })["catch"](function (err) {
       return console.log(err);
     });
@@ -83116,6 +83223,20 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     Artigos: _Store_artigos__WEBPACK_IMPORTED_MODULE_2__["Artigos"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/Strings.js":
+/*!*********************************!*\
+  !*** ./resources/js/Strings.js ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var strings = {
+  uri: localStorage.getItem('env')
+};
+module.exports = strings;
 
 /***/ }),
 
@@ -83984,8 +84105,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/vitor/Documentos/workspace/laravue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/vitor/Documentos/workspace/laravue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/vine5/workspace/laravue/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/vine5/workspace/laravue/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ }),

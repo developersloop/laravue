@@ -1,4 +1,5 @@
 var {getArtigos,Update,Store,Trash,artigoShow} = require('../Function/artigos');
+const strings = require('../Strings');
 const ARTIGOS  = 'ARTIGOS';
 const MESSAGE = 'MESSAGE';
 const ERR = 'ERR';
@@ -14,8 +15,6 @@ const state = {
 
 const mutations = {
     [ARTIGOS](state, ...params){
-
-        console.log(params);
         params[0].forEach(element => {
             state.items.push(element)
         });
@@ -55,7 +54,7 @@ const actions = {
              .then(data => {
                   console.log(data);
                    commit(MESSAGE,data.data);
-                   window.location.href  = 'http://localhost:8000/admin/artigos'
+                   window.location.href  = strings.uri
              })
              .catch(err => console.log(err));
     },
@@ -65,7 +64,7 @@ const actions = {
        Update(data)
                 .then(data => {
                          commit(MESSAGE,data.data);
-                         window.location.href  = 'http://localhost:8000/admin/artigos'
+                         window.location.href  = strings.uri
 
                 })
                 .catch(err => console.log(err));
@@ -76,7 +75,7 @@ const actions = {
         Trash(id)
         .then(data => {
                  commit(MESSAGE,data.data);
-                 window.location.href  = 'http://localhost:8000/admin/artigos'
+                 window.location.href  = strings.uri
 
         })
         .catch(err => console.log(err));
