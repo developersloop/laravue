@@ -145,19 +145,15 @@ export default {
                this.items.push(this.data());
                let fields = JSON.parse(localStorage.getItem('titles'));
                let key = Object.keys(fields);
-               let obj = [];
+               let fiels = this.fields;
 
               key.push('Acao');
-              _.forEach(key,function(item){[
-                   obj.push({
+              _.forEach(key,function(item){
+                   fiels.push({
                        key:item,
                        sortable:true
                    })
-              ]})
-
-              console.log(obj);
-              this.fields.push(obj);
-
+              })
            },
 
            dispatchEdit(id){
