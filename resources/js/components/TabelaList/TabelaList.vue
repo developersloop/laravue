@@ -3,7 +3,7 @@
         <div v-if="err" class="alert alert-success" role="alert" id="message">
            {{ mss }}
         </div>
-        <Migalhas :lista="this.lista"/>
+        <!-- <Migalhas :lista="this.lista"/> -->
         <div class="form-inline" style="
              display:flex;
              flex-flow:row wrap;
@@ -120,6 +120,7 @@ export default {
       },
       mounted(){
           this.getMounted();
+          console.log(this.store);
           localStorage.setItem('store',this.store);
           localStorage.setItem('env',this.env);
           var id = document.getElementById('message');
