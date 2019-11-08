@@ -15,6 +15,8 @@ const state = {
 
 const mutations = {
     [ARTIGOS](state, ...params){
+
+        localStorage.setItem('titles',JSON.stringify(params[0][0]));
         params[0].forEach(element => {
             state.items.push(element)
         });
@@ -83,9 +85,7 @@ const actions = {
 }
 
 const getters = {
-       artigos: () => {
-        //    console.log(state.items[0]);
-
+       data: () => {
            return state.items;
        },
 

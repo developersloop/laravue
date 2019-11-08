@@ -2438,19 +2438,7 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       current_page: 1,
       per_page: 2,
       rows: '',
-      fields: [{
-        key: 'id',
-        sortable: true
-      }, {
-        key: 'titulo',
-        sortable: true
-      }, {
-        key: 'descricao',
-        sortable: true
-      }, {
-        key: 'Acao',
-        sortable: false
-      }],
+      fields: [],
       obj: {},
       details: false
     };
@@ -2473,11 +2461,25 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     localStorage.removeItem('mensagem');
     localStorage.removeItem('error');
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['delete']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(strings.store, ['artigos']), {
+  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['delete']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(strings.store, ['data']), {
     getMounted: function getMounted() {
       var data = this.getAll();
       var items = this.items;
-      this.items.push(this.artigos());
+      this.items.push(this.data());
+      var fields = JSON.parse(localStorage.getItem('titles'));
+      var key = Object.keys(fields);
+      var obj = [];
+      key.push('Acao');
+
+      lodash__WEBPACK_IMPORTED_MODULE_0___default.a.forEach(key, function (item) {
+        [obj.push({
+          key: item,
+          sortable: true
+        })];
+      });
+
+      console.log(obj);
+      this.fields.push(obj);
     },
     dispatchEdit: function dispatchEdit(id) {
       window.location.href = "".concat(this.env, "/").concat(id, "/edit");
@@ -2500,7 +2502,6 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     search: function search() {
       var busca = this.bc;
       var data = this.items[0];
-      console.log(data);
       this.rows = data != undefined ? data.length : '';
 
       if (busca === '') {
@@ -83123,7 +83124,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "artigoShow", function() { return artigoShow; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
- // const URI = 'http://localhost:8000/api/search';
+
+
+var string = __webpack_require__(/*! ../Strings */ "./resources/js/Strings.js"); // const URI = 'http://localhost:8000/api/search';
+
 
 var getArtigos = function getArtigos() {
   var URI = 'http://localhost:8081/api/search';
@@ -83139,16 +83143,38 @@ var getArtigos = function getArtigos() {
 };
 var Update = function Update(data) {
   var id = data.id;
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("http://localhost:8081/api/artigos/update/".concat(id), data);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.put("".concat(string.uriApiArtigos, "/update/").concat(id), data);
 };
 var Store = function Store(data) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://localhost:8081/api/artigos/store", data);
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(string.uriApiArtigos, "/store"), data);
 };
 var Trash = function Trash(id) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8081/api/artigos/delete/".concat(id));
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(string.uriApiArtigos, "/delete/").concat(id));
 };
 var artigoShow = function artigoShow(id) {
-  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://localhost:8081/api/artigos/show/".concat(id));
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(string.uriApiArtigos, "/show/").concat(id));
+};
+
+/***/ }),
+
+/***/ "./resources/js/Function/users.js":
+/*!****************************************!*\
+  !*** ./resources/js/Function/users.js ***!
+  \****************************************/
+/*! exports provided: getUsers */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUsers", function() { return getUsers; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var strings = __webpack_require__(/*! ../Strings */ "./resources/js/Strings.js");
+
+var getUsers = function getUsers() {
+  return axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(strings.uriApiUsers);
 };
 
 /***/ }),
@@ -83194,6 +83220,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, ARTIGOS, function 
     params[_key - 1] = arguments[_key];
   }
 
+  localStorage.setItem('titles', JSON.stringify(params[0][0]));
   params[0].forEach(function (element) {
     state.items.push(element);
   });
@@ -83257,8 +83284,7 @@ var actions = {
   }
 };
 var getters = {
-  artigos: function artigos() {
-    //    console.log(state.items[0]);
+  data: function data() {
     return state.items;
   },
   message: function message() {
@@ -83291,6 +83317,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _Store_artigos__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Store/artigos */ "./resources/js/Store/artigos.js");
+/* harmony import */ var _Store_users__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Store/users */ "./resources/js/Store/users.js");
+
 
 
 
@@ -83298,9 +83326,66 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 /* harmony default export */ __webpack_exports__["default"] = (new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   strict: false,
   modules: {
-    Artigos: _Store_artigos__WEBPACK_IMPORTED_MODULE_2__["Artigos"]
+    Artigos: _Store_artigos__WEBPACK_IMPORTED_MODULE_2__["Artigos"],
+    Users: _Store_users__WEBPACK_IMPORTED_MODULE_3__["Users"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/Store/users.js":
+/*!*************************************!*\
+  !*** ./resources/js/Store/users.js ***!
+  \*************************************/
+/*! exports provided: Users */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Users", function() { return Users; });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var _require = __webpack_require__(/*! ../Function/users */ "./resources/js/Function/users.js"),
+    getUsers = _require.getUsers;
+
+var USERS = 'USERS';
+var state = {
+  users: []
+};
+
+var mutations = _defineProperty({}, USERS, function (state) {
+  for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    params[_key - 1] = arguments[_key];
+  }
+
+  localStorage.setItem('titles', JSON.stringify(params[0][0]));
+  params[0].forEach(function (element) {
+    state.users.push(element);
+  });
+});
+
+var actions = {
+  getAll: function getAll(_ref) {
+    var commit = _ref.commit;
+    getUsers().then(function (data) {
+      return commit('USERS', data.data);
+    })["catch"](function (err) {
+      return console.log(err);
+    });
+  }
+};
+var getters = {
+  data: function data() {
+    return state.users;
+  }
+};
+var Users = {
+  namespaced: true,
+  state: state,
+  mutations: mutations,
+  actions: actions,
+  getters: getters
+};
 
 /***/ }),
 
@@ -83313,6 +83398,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
 
 var strings = {
   uri: localStorage.getItem('env'),
+  uriApiArtigos: 'http://localhost:8081/api/artigos',
+  uriApiUsers: 'http://localhost:8081/api/users',
   store: localStorage.getItem('store')
 };
 module.exports = strings;

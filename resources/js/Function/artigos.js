@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+const string  = require('../Strings');
 // const URI = 'http://localhost:8000/api/search';
 
 
@@ -21,20 +21,20 @@ import axios from 'axios';
 
 export const Update = function(data){
     const id = data.id;
-   return axios.put(`http://localhost:8081/api/artigos/update/${id}`,data)
+   return axios.put(`${string.uriApiArtigos}/update/${id}`,data)
 
 }
 
 export const Store = function(data){
-      return axios.post(`http://localhost:8081/api/artigos/store`,data)
+      return axios.post(`${string.uriApiArtigos}/store`,data)
 }
 
 export const Trash = function(id){
-    return axios.get(`http://localhost:8081/api/artigos/delete/${id}`)
+    return axios.get(`${string.uriApiArtigos}/delete/${id}`)
 }
 
 export const artigoShow = function(id){
-    return axios.get(`http://localhost:8081/api/artigos/show/${id}`)
+    return axios.get(`${string.uriApiArtigos}/show/${id}`)
 }
 
 

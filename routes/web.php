@@ -24,5 +24,11 @@ Route::middleware(['auth'])->group(function () {
          Route::resource('artigos', 'ArtigosController');
          Route::get('/artigos/detail','ArtigosController@show')->name('artigos.detail');
     });
+
+
+    Route::group(['prefix' => 'admin/users'], function () {
+        Route::get('/','UsuariosController@index')->name('users.manager');
+        Route::get('/create','UsuariosController@create')->name('users.create');
+    });
 });
 

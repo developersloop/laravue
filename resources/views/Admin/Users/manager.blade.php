@@ -6,9 +6,9 @@
             <List
               v-bind:lista = "{{ $data }}"
               env="{{ url()->current() }}"
-              criar="{{ route('artigos.create') }}"
+              criar="{{ route('users.create') }}"
               token={{ csrf_token() }}
-              store="Artigos">
+              store="Users">
             </List>
     </Painel>
 </Grid>

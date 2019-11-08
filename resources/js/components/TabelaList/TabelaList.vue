@@ -112,12 +112,7 @@ export default {
               current_page: 1,
               per_page: 2,
               rows:'',
-              fields: [
-                  { key:'id', sortable: true },
-                  { key:'titulo', sortable: true},
-                  { key:'descricao', sortable: true},
-                  { key: 'Acao', sortable: false}
-              ],
+              fields: [],
               obj:{},
               details:false
 
@@ -143,11 +138,25 @@ export default {
       methods:{
           ...mapActions(strings.store,['getAll']),
           ...mapActions(strings.store,['delete']),
-          ...mapGetters(strings.store,['artigos']),
+          ...mapGetters(strings.store,['data']),
            getMounted(){
                let data = this.getAll();
                const items = this.items;
-               this.items.push(this.artigos());
+               this.items.push(this.data());
+               let fields = JSON.parse(localStorage.getItem('titles'));
+               let key = Object.keys(fields);
+               let obj = [];
+
+              key.push('Acao');
+              _.forEach(key,function(item){[
+                   obj.push({
+                       key:item,
+                       sortable:true
+                   })
+              ]})
+
+              console.log(obj);
+              this.fields.push(obj);
 
            },
 
@@ -176,8 +185,6 @@ export default {
           search:function(){
               let busca = this.bc;
               let data = this.items[0];
-
-              console.log(data);
 
                 this.rows = data != undefined ? data.length : '';
 

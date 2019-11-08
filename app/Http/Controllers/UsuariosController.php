@@ -13,6 +13,7 @@ class UsuariosController extends Controller
         $data = DB::table('users')
                     ->get();
 
+
          return view('Admin.users.manager',
                                     compact(
                                             'data'
@@ -22,7 +23,7 @@ class UsuariosController extends Controller
 
     public function create()
     {
-
+         return views('Admin.users.create');
     }
 
     public function store()
