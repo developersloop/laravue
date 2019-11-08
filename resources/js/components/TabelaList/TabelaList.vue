@@ -52,7 +52,6 @@
              </template>
          </b-table>
              <div v-if="rows > 1" style="display:flex; flex-flow:row wrap; justify-content:space-around; width:450px;">
-                 <!-- <div>{{search}}</div> -->
                  <div>
                         <input class="form-control  mr-sm-2" type="text" ref="pag" placeholder="Enter page number" v-on:keyup.enter="changeCurrentPage()">
                  </div>
@@ -152,7 +151,7 @@ export default {
               _.forEach(key,function(item){
                    fiels.push({
                        key:item,
-                       sortable:true
+                       sortable: item === 'Acao' ? false : true
                    })
               })
            },
