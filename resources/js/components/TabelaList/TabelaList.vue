@@ -144,6 +144,7 @@ export default {
                const items = this.items;
                this.items.push(this.data());
                let fields = JSON.parse(localStorage.getItem('titles'));
+               fields = {...fields,Acao:''};
                let key = Object.keys(fields);
                let fiels = this.fields;
 
