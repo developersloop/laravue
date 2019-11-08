@@ -23,7 +23,9 @@
             :items="search"
             :per-page="per_page"
             :current-page="current_page"
-            :fields="fields">
+            :fields="fields"
+            class="text-center"
+           >
              <template v-slot:cell(Acao)="row">
                   <div>
                         <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(row.item.id)">Editar</button>
@@ -48,13 +50,18 @@
                   </div>
              </template>
          </b-table>
-             <div v-if="rows > 1">
-                 <b-pagination
-                    v-model="current_page"
-                    :total-rows="rows"
-                    :per-page="2"
-                    aria-controls="my-table"
-                ></b-pagination>
+             <div v-if="rows > 1" style="display:flex; flex-flow:row wrap; justify-content:space-around; width:450px;">
+                 <div>
+                        <input class="form-control  mr-sm-2" type="text" ref="pag" placeholder="Enter page number" v-on:keyup.enter="changeCurrentPage()">
+                 </div>
+                 <div>
+                       <b-pagination
+                            v-model="current_page"
+                            :total-rows="rows"
+                            :per-page="per_page"
+                            aria-controls="my-table"
+                         ></b-pagination>
+                 </div>
              </div>
 
 
@@ -86,7 +93,12 @@ export default {
               current_page: 1,
               per_page: 2,
               rows:'',
-              fields: ['id', 'titulo', 'descricao','Acao'],
+              fields: [
+                  { key:'id', sortable: true },
+                  { key:'titulo', sortable: true},
+                  { key:'descricao', sortable: true},
+                  { key: 'Acao', sortable: false}
+              ],
               obj:{},
               details:false
 
@@ -129,6 +141,14 @@ export default {
 
            edit(obj = {}){this.obj = obj;this.details = true;},
 
+           changeCurrentPage(){
+
+               const count = Math.round(this.rows / this.per_page);
+               console.log(count);
+               const val = this.$refs.pag.value;
+               this.current_page = val;
+           },
+
 
 
            orderColumn(title,index){
@@ -157,22 +177,17 @@ export default {
               let busca = this.bc;
               let data = this.items[0];
 
+              console.log(data);
+
                 this.rows = data != undefined ? data.length : '';
 
-              if(busca === ''){
-                      return data;
-
-              }
-              else {
-                    return data.filter(res => {
-                        if(res.titulo === busca || res.descricao === busca){
-                            //  this.rows = data[0].length;
-                           return data;
-                       }
-                       return false;
-                  })
-              }
-
+                if(busca  === ''){
+                    return data;
+                }else{
+                    return data.filter(item => {
+                         return item.titulo.toLowerCase().includes(busca.toLowerCase())
+                    })
+                }
           }
       }
 }
