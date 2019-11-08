@@ -51,6 +51,7 @@
              </template>
          </b-table>
              <div v-if="rows > 1" style="display:flex; flex-flow:row wrap; justify-content:space-around; width:450px;">
+                 <!-- <div>{{search}}</div> -->
                  <div>
                         <input class="form-control  mr-sm-2" type="text" ref="pag" placeholder="Enter page number" v-on:keyup.enter="changeCurrentPage()">
                  </div>
@@ -144,30 +145,10 @@ export default {
            changeCurrentPage(){
 
                const count = Math.round(this.rows / this.per_page);
-               console.log(count);
                const val = this.$refs.pag.value;
+
                this.current_page = val;
-           },
 
-
-
-           orderColumn(title,index){
-               let prefix = this.order == 'asc' ? 'desc' : (this.order == 'desc' ?  'asc' : 'desc');
-               let order = '';
-                 switch (title) {
-                     case 'titulo':
-                          this.order = prefix;
-                          this.nameColumn = title;
-                     break;
-
-                     case 'Descrição':
-                            this.order = prefix;
-                            this.nameColumn = 'descricao';
-                     break;
-
-                     default:
-                         break;
-                 }
            },
 
 
