@@ -26,6 +26,7 @@
             :fields="fields"
             class="text-center"
            >
+
              <template v-slot:cell(Acao)="row">
                   <div>
                         <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(row.item.id)">Editar</button>
