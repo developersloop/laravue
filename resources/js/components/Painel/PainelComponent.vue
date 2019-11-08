@@ -24,7 +24,7 @@ export default {
        },
        previous:{
             type: String,
-            required:true
+            required:false
        }
    },
    data(){

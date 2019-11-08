@@ -73,15 +73,32 @@
 
 <script>
 import _ from 'lodash';
-import $ from 'jquery';
 import axios from 'axios';
-import Details from '../Details/details';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
+const strings  = require('../../Strings');
 export default {
-    components:{
-         'Details':Details
+    props:{
+         lista:{
+             type: Array,
+             required:true
+         },
+         criar:{
+             type:String,
+             required:true
+         },
+         env:{
+             type:String,
+             required:true
+         },
+         token:{
+             type:String,
+             required:true
+         },
+         store:{
+             type:String,
+             required:true
+         }
     },
-    props:['titulos','lista','editar','criar','env','token','_method'],
       data(){
           return{
               trash:'',
@@ -109,6 +126,7 @@ export default {
       },
       mounted(){
           this.getMounted();
+          localStorage.setItem('store',this.store);
           localStorage.setItem('env',this.env);
           var id = document.getElementById('message');
           this.err = localStorage.getItem('error');
@@ -123,9 +141,9 @@ export default {
         localStorage.removeItem('error');
       },
       methods:{
-          ...mapActions('Artigos',['getAll']),
-          ...mapActions('Artigos',['delete']),
-          ...mapGetters('Artigos',['artigos']),
+          ...mapActions(strings.store,['getAll']),
+          ...mapActions(strings.store,['delete']),
+          ...mapGetters(strings.store,['artigos']),
            getMounted(){
                let data = this.getAll();
                const items = this.items;

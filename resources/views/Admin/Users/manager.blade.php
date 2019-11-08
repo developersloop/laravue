@@ -2,9 +2,9 @@
 
 @section('content')
 <Grid tamanho="7">
-    <Painel titulo="Artigos" previous="{{url()->previous()}}">
+    <Painel titulo="Usuários" previous="{{url()->previous()}}">
             <List
-              v-bind:lista = "{{ $lista }}"
+              v-bind:lista = "{{ $data }}"
               env="{{ url()->current() }}"
               criar="{{ route('artigos.create') }}"
               token={{ csrf_token() }}

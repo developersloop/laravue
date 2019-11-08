@@ -1,5 +1,6 @@
 const strings  = {
-      uri: localStorage.getItem('env')
+      uri: localStorage.getItem('env'),
+      store:localStorage.getItem('store')
 }
 
 
