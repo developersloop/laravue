@@ -2,7 +2,7 @@
 
 @section('content')
 <Grid tamanho="7">
-    <Painel titulo="Artigos">
+    <Painel titulo="Artigos" previous="{{url()->previous()}}">
             <List
               v-bind:lista = "{{ $lista }}"
               env="{{ url()->current() }}"
