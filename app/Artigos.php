@@ -16,4 +16,11 @@ class Artigos extends Model
         'titulo',
         'descricao'
     ];
+
+    public function getFillable()
+    {
+          return $this->fillable;
+    }
+
+
 }

@@ -18,13 +18,38 @@ class ArtigosController extends Controller
     public function index()
     {
 
-        $lista = json_encode([
-            ["id"=> 1, "titulo"=>"Home","url"=>route('home')],
-            ["id" => 2, "titulo" =>"Lista de compras","url"=>""]
-        ]);
-        // dd($artigos);
+        $artigos = new Artigos();
+
+        $fillable = $artigos->getFillable();
+
+        $fields = [];
+        $countFields = count($fields);
+        foreach ($fillable as $key => $value) {
+            array_push($fields,
+                    [
+                        "key" => $value,
+                        "sortable" => true
+                    ]
+            );
+
+            if($key == $countFields){
+                array_push($fields,
+                            [
+                                "key" => "Acao",
+                                "sortable" => false
+                            ]
+                    );
+
+
+            }
+        }
+
+        $getFields = json_encode($fields,true);
+        dd($fields);
+
         return view("Admin.artigos.manager",compact(
-                                                    'lista'
+                                                    'lista',
+                                                    'getFields'
                                             ));
     }
 

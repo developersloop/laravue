@@ -8,7 +8,7 @@
               criar="{{ route('artigos.create') }}"
               token={{ csrf_token() }}
               store="Artigos"
-              v-bind:titles="[{key:'id',sortable:true},{key:'titulo',sortable:true},{key:'descricao',sortable:true},{key:'Acao',sortable:false}]">
+              v-bind:titles="{{$getFields}}">
             </List>
     </Painel>
 </Grid>

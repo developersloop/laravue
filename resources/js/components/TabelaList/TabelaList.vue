@@ -119,6 +119,10 @@ export default {
           }
       },
 
+      created(){
+
+      },
+
       mounted(){
            this.getMounted();
           localStorage.setItem('store',this.store);
