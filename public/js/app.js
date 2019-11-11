@@ -2317,12 +2317,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 //
 //
 //
@@ -2418,6 +2412,10 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     store: {
       type: String,
       required: true
+    },
+    titles: {
+      type: Array,
+      required: true
     }
   },
   data: function data() {
@@ -2433,14 +2431,12 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       current_page: 1,
       per_page: 2,
       rows: '',
-      fields: [],
+      fields: this.titles,
       obj: {},
-      details: false,
-      titles: {}
+      details: false
     };
   },
-  beforeMount: function beforeMount() {
-    this.titles = JSON.parse(localStorage.getItem('titles'));
+  mounted: function mounted() {
     this.getMounted();
     localStorage.setItem('store', this.store);
     localStorage.setItem('env', this.env);
@@ -2469,20 +2465,6 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       var data = getAll();
       var items = this.items;
       this.items.push(getData);
-      var fields = this.titles;
-      fields = _objectSpread({}, fields, {
-        Acao: ''
-      });
-      var key = Object.keys(fields);
-      var fiels = this.fields;
-      key.push('Acao');
-
-      lodash__WEBPACK_IMPORTED_MODULE_0___default.a.forEach(key, function (item) {
-        fiels.push({
-          key: item,
-          sortable: item === 'Acao' ? false : true
-        });
-      });
     },
     dispatchEdit: function dispatchEdit(id) {
       window.location.href = "".concat(this.env, "/").concat(id, "/edit");
@@ -2502,6 +2484,10 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     }
   },
   computed: {
+    title: function title() {
+      this.fields = JSON.parse(localStorage.getItem('titles'));
+      return this.fields;
+    },
     search: function search() {
       var busca = this.bc;
       var data = this.items[0];

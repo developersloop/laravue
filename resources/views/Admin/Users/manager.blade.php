@@ -8,7 +8,8 @@
               env="{{ url()->current() }}"
               criar="{{ route('users.create') }}"
               token={{ csrf_token() }}
-              store="Users">
+              store="Users"
+              v-bind:titles="[{key:'id',sortable:true},{key:'name',sortable:true},{key:'email',sortable:true},{key:'Acao',sortable:false}]">
             </List>
     </Painel>
 </Grid>

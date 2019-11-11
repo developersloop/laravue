@@ -93,6 +93,10 @@ export default {
          store:{
              type:String,
              required:true
+         },
+         titles:{
+               type: Array,
+               required:true
          }
     },
       data(){
@@ -108,17 +112,14 @@ export default {
               current_page: 1,
               per_page: 2,
               rows:'',
-              fields: [],
+              fields:this.titles,
               obj:{},
               details:false,
-              titles:{}
-
 
           }
       },
 
-      beforeMount(){
-           this.titles = JSON.parse(localStorage.getItem('titles'));
+      mounted(){
            this.getMounted();
           localStorage.setItem('store',this.store);
           localStorage.setItem('env',this.env);
@@ -144,18 +145,7 @@ export default {
                let data = getAll();
                const items = this.items;
                this.items.push(getData);
-               let fields = this.titles;
-               fields = {...fields,Acao:''};
-               let key = Object.keys(fields);
-               let fiels = this.fields;
 
-              key.push('Acao');
-              _.forEach(key,function(item){
-                   fiels.push({
-                       key:item,
-                       sortable: item === 'Acao' ? false : true
-                   })
-              })
            },
 
            dispatchEdit(id){
@@ -180,6 +170,11 @@ export default {
 
       },
       computed:{
+
+          title(){
+                this.fields = JSON.parse(localStorage.getItem('titles'));
+                return this.fields;
+          },
           search:function(){
               let busca = this.bc;
               let data = this.items[0];
