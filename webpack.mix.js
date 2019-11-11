@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+require('laravel-mix-eslint');
 
 /*
  |--------------------------------------------------------------------------
@@ -11,26 +12,13 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+    mix.js('resources/js/app.js', 'public/js').eslint({
+        test: ['js', 'vue'], // will convert to /\.(js|vue)$/ or you can use /\.(js|vue)$/ by itself.
+        exclude: ['node_modules'],
+        loader: 'eslint-loader',
+        options:{
+            fix: false,
+            cache: false,
+        }
+    })
     .sass('resources/sass/app.scss', 'public/css');
-
-
-
-mix.webpackConfig({
-        resolve: {
-            symlinks: false
-        }
-      })
-
-      mix.webpackConfig({
-        module: {
-          rules: [
-            {
-              enforce: 'pre',
-              test: /\.(js|vue)$/,
-              loader: 'eslint-loader',
-              exclude: /node_modules/
-            }
-          ]
-        }
-      })
