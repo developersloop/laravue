@@ -5,8 +5,7 @@ window.Vue = require('vue');
 // import vue
 import Vuex from 'vuex';
 import store  from './Store/index';
-import strict from './Store/index'
-
+import router from '../js/router/index';
 Vue.use(require('vue-resource'));
 
 import BootstrapVue from 'bootstrap-vue'
@@ -32,5 +31,6 @@ Vue.component('Details',require('./components/Details/details.vue').default)
 
 const app = new Vue({
     el: '#app',
+    router,
     store,
 });

@@ -77,10 +77,7 @@ import { mapActions, mapMutation,mapGetters } from 'vuex';
 const strings  = require('../../Strings');
 export default {
     props:{
-         lista:{
-             type: Array,
-             required:true
-         },
+
          criar:{
              type:String,
              required:true
@@ -113,14 +110,16 @@ export default {
               rows:'',
               fields: [],
               obj:{},
-              details:false
+              details:false,
+              titles:{}
 
 
           }
       },
-      mounted(){
-          this.getMounted();
-          console.log(this.store);
+
+      beforeMount(){
+           this.titles = JSON.parse(localStorage.getItem('titles'));
+           this.getMounted();
           localStorage.setItem('store',this.store);
           localStorage.setItem('env',this.env);
           var id = document.getElementById('message');
@@ -135,15 +134,17 @@ export default {
         localStorage.removeItem('mensagem')
         localStorage.removeItem('error');
       },
+
       methods:{
-          ...mapActions(strings.store,['getAll']),
-          ...mapActions(strings.store,['delete']),
-          ...mapGetters(strings.store,['data']),
            getMounted(){
-               let data = this.getAll();
+               const store = this.$store;
+               const choiceStore = `${this.store}/`;
+               let getAll = store._actions[`${choiceStore}getAll`][0];
+               let getData = store.getters[`${choiceStore}data`];
+               let data = getAll();
                const items = this.items;
-               this.items.push(this.data());
-               let fields = JSON.parse(localStorage.getItem('titles'));
+               this.items.push(getData);
+               let fields = this.titles;
                fields = {...fields,Acao:''};
                let key = Object.keys(fields);
                let fiels = this.fields;
@@ -162,7 +163,7 @@ export default {
            },
 
            Excluir(index){
-               this.delete(index);
+                  let trashObj = store._actions[`${choiceStore}delete`][0](index)
            },
 
            edit(obj = {}){this.obj = obj;this.details = true;},

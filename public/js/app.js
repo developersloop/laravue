@@ -2395,7 +2395,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 
@@ -2404,10 +2403,6 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
-    lista: {
-      type: Array,
-      required: true
-    },
     criar: {
       type: String,
       required: true
@@ -2440,10 +2435,12 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       rows: '',
       fields: [],
       obj: {},
-      details: false
+      details: false,
+      titles: {}
     };
   },
-  mounted: function mounted() {
+  beforeMount: function beforeMount() {
+    this.titles = JSON.parse(localStorage.getItem('titles'));
     this.getMounted();
     localStorage.setItem('store', this.store);
     localStorage.setItem('env', this.env);
@@ -2461,31 +2458,37 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     localStorage.removeItem('mensagem');
     localStorage.removeItem('error');
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['getAll']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapActions"])(strings.store, ['delete']), {}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(strings.store, ['data']), {
+  methods: {
     getMounted: function getMounted() {
-      var data = this.getAll();
+      var store = this.$store;
+      var choiceStore = "".concat(this.store, "/");
+
+      var getAll = store._actions["".concat(choiceStore, "getAll")][0];
+
+      var getData = store.getters["".concat(choiceStore, "data")];
+      var data = getAll();
       var items = this.items;
-      this.items.push(this.data());
-      var fields = JSON.parse(localStorage.getItem('titles'));
+      this.items.push(getData);
+      var fields = this.titles;
+      fields = _objectSpread({}, fields, {
+        Acao: ''
+      });
       var key = Object.keys(fields);
-      var obj = [];
+      var fiels = this.fields;
       key.push('Acao');
 
       lodash__WEBPACK_IMPORTED_MODULE_0___default.a.forEach(key, function (item) {
-        [obj.push({
+        fiels.push({
           key: item,
-          sortable: true
-        })];
+          sortable: item === 'Acao' ? false : true
+        });
       });
-
-      console.log(obj);
-      this.fields.push(obj);
     },
     dispatchEdit: function dispatchEdit(id) {
       window.location.href = "".concat(this.env, "/").concat(id, "/edit");
     },
     Excluir: function Excluir(index) {
-      this["delete"](index);
+      var trashObj = store._actions["".concat(choiceStore, "delete")][0](index);
     },
     edit: function edit() {
       var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -2497,7 +2500,7 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       var val = this.$refs.pag.value;
       this.current_page = val;
     }
-  }),
+  },
   computed: {
     search: function search() {
       var busca = this.bc;
@@ -68135,8 +68138,6 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _c("Migalhas", { attrs: { lista: this.lista } }),
-      _vm._v(" "),
       _c(
         "div",
         {
@@ -83417,11 +83418,13 @@ module.exports = strings;
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _Store_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Store/index */ "./resources/js/Store/index.js");
-/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
-/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _js_router_index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../js/router/index */ "./resources/js/router/index.js");
+/* harmony import */ var _js_router_index__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_js_router_index__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bootstrap-vue */ "./node_modules/bootstrap-vue/esm/index.js");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! bootstrap-vue/dist/bootstrap-vue.css */ "./node_modules/bootstrap-vue/dist/bootstrap-vue.css");
+/* harmony import */ var bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(bootstrap_vue_dist_bootstrap_vue_css__WEBPACK_IMPORTED_MODULE_5__);
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // import vue
@@ -83433,7 +83436,7 @@ Vue.use(__webpack_require__(/*! vue-resource */ "./node_modules/vue-resource/dis
 
 
 
-Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_2__["default"]);
+Vue.use(bootstrap_vue__WEBPACK_IMPORTED_MODULE_3__["default"]);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('Navbar', __webpack_require__(/*! ./components/Navbar/Navbar.vue */ "./resources/js/components/Navbar/Navbar.vue")["default"]);
 Vue.component('Painel', __webpack_require__(/*! ./components/Painel/PainelComponent.vue */ "./resources/js/components/Painel/PainelComponent.vue")["default"]);
@@ -83446,6 +83449,7 @@ Vue.component('Editar', __webpack_require__(/*! ./components/Crud/Edit.vue */ ".
 Vue.component('Details', __webpack_require__(/*! ./components/Details/details.vue */ "./resources/js/components/Details/details.vue")["default"]);
 var app = new Vue({
   el: '#app',
+  router: _js_router_index__WEBPACK_IMPORTED_MODULE_2___default.a,
   store: _Store_index__WEBPACK_IMPORTED_MODULE_1__["default"]
 });
 
@@ -84250,6 +84254,36 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_TabelaList_vue_vue_type_template_id_250d8e58___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/router/index.js":
+/*!**************************************!*\
+  !*** ./resources/js/router/index.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// import Vue from 'vue';
+// import VueRouter from 'vue-router';
+// import { Card } from '../components/Cards/CardComponent.vue';
+// Vue.use(VueRouter)
+// const router = new VueRouter({
+//       routes:[
+//            {
+//               path:'/home',
+//               components: {default: Card},
+//               props:{
+//                          titulo: "Artigos",
+//                          url: "{{ route('artigos.index') }}",
+//                          cor: "orange",
+//                          icone: "ion ion-pie-graph"
+//                     }
+//            },
+//       ]
+// })
+// // http://localhost:8081/admin/artigos
+// export default router;
 
 /***/ }),
 
