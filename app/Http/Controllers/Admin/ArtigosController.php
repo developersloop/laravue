@@ -32,20 +32,16 @@ class ArtigosController extends Controller
                     ]
             );
 
-            if($key == $countFields){
-                array_push($fields,
-                            [
-                                "key" => "Acao",
-                                "sortable" => false
-                            ]
-                    );
-
-
-            }
         }
+        array_push($fields,
+                [
+                    "key" => "Acao",
+                    "sortable" => false
+                ]
+            );
 
         $getFields = json_encode($fields,true);
-        dd($fields);
+        // dd($getFields);
 
         return view("Admin.artigos.manager",compact(
                                                     'lista',

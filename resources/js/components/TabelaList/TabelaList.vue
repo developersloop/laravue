@@ -120,7 +120,7 @@ export default {
       },
 
       created(){
-
+          let a = {ad:'adad'}
       },
 
       mounted(){
@@ -157,7 +157,7 @@ export default {
            },
 
            Excluir(index){
-                  let trashObj = store._actions[`${choiceStore}delete`][0](index)
+                  let trashObj = this.$store._actions[`${choiceStore}delete`][0](index)
            },
 
            edit(obj = {}){this.obj = obj;this.details = true;},
@@ -182,6 +182,7 @@ export default {
           search:function(){
               let busca = this.bc;
               let data = this.items[0];
+
 
                 this.rows = data != undefined ? data.length : '';
 
