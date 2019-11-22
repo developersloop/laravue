@@ -96,16 +96,17 @@ export default {
              }
 
 
-            // chamando metodo store artigos vuex
-             this.postUsers(data);
-               if(this.message() === false){
-                   console.log('adad');
-                    localStorage.setItem('store',true);
-                    window.location.href  = 'http://localhost:8081/admin/users';
+            // implementar sistema de chamadas
 
-                }
+            //  this.postUsers(data);
+            //    if(this.message() === false){
+            //        console.log('adad');
+            //         localStorage.setItem('store',true);
+            //         window.location.href  = 'http://localhost:8081/admin/users';
 
-            return 'adad';
+            //     }
+
+            // return 'adad';
 
          },
 
