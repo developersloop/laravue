@@ -4,7 +4,9 @@
                  :type="type"
                  class="form-control"
                  :name="name"
-                 :placeholder="place"/>
+                 :placeholder="place"
+                 @input="$emit('input', {target:$event.target.value,nameInput:name})"
+                 />
 
     </div>
 </template>
@@ -25,15 +27,6 @@
                  type:String
             }
         },
-
-        data(){
-            return {
-
-
-            }
-        },
-
-
 
         created(){
              this.$emit('refil','name');

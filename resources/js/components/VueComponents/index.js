@@ -9,7 +9,7 @@ import List from '../TabelaList/TabelaList.vue';
 import Migalhas from '../Migalhas/Migalhas.vue';
 import Formulario  from '../Formulario/Formulario.vue';
 import FormularioUser from '../Users/FormularioUser.vue';
-import FormularioArtigos from '../Formularios/Formulario.vue';
+// import FormularioArtigos from '../Formularios/Formulario.vue';
 import Editar from '../Crud/Edit.vue';
 import Details from '../Details/details.vue';
 import Input from '../Input/Input.vue';
@@ -24,7 +24,7 @@ export const Componets = [
                         Vue.component('List',List),
                         Vue.component('Migalhas',Migalhas),
                         Vue.component('Formulario',Formulario),
-                        Vue.component('FormularioArtigos',FormularioArtigos),
+                        // Vue.component('FormularioArtigos',FormularioArtigos),
                         Vue.component('Formulariouser',FormularioUser),
                         Vue.component('Editar',Editar),
                         Vue.component('Details',Details),

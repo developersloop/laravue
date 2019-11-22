@@ -5,9 +5,12 @@ import {
         from '../Function/users';
 
 const USERS = 'USERS';
+const MESSAGE = 'MESSAGE';
+
 
 const state = {
-   users:[]
+   users:[],
+   message:''
 }
 
 const mutations = {
@@ -17,7 +20,15 @@ const mutations = {
         params[0].forEach(element => {
             state.users.push(element)
         });
-   }
+   },
+    [MESSAGE](state, ...params){
+        state.message = params[0].error;
+        // console.log(params);
+        // state.err = params[0].error;
+        localStorage.setItem('mensagem',state.message);
+        localStorage.setItem('error',state.err);
+
+    },
 }
 
 const actions = {
@@ -26,9 +37,11 @@ const actions = {
                 .then(data => commit('USERS',data.data))
                 .catch(err => console.log(err))
     },
-    postUsers({commit},{name,email}){
-          storeUsers(name,email)
-                                .then(response => console.log(response))
+    postUsers({commit},data){
+          storeUsers(data)
+                                .then(data => {
+                                    commit(MESSAGE,data.data);
+                                })
                                 .catch(err => console.log(err))
     }
 }
@@ -36,7 +49,10 @@ const actions = {
 const getters = {
      data: () => {
            return state.users;
-     }
+     },
+     message:() => {
+        return state.message;
+   },
 }
 
 

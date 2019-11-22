@@ -8,7 +8,8 @@
                                 type = "text"
                                 name = "name"
                                 place = "Enter Nome"
-                                @refil="handleEmit"/>
+                                @input="inputHandle"
+                                required/>
                     </div>
                     <br>
                     <div class="col-md-4">
@@ -16,7 +17,9 @@
                         <Input
                               type = "text"
                               name="email"
-                              place = "Enter Email"/>
+                              place = "Enter Email"
+                               @input="inputHandle"
+                               required/>
                     </div>
                     <br>
                     <div class="col-md-4">
@@ -24,7 +27,9 @@
                         <Input
                               type = "password"
                               name="password"
-                              place="Enter Password"/>
+                              place="Enter Password"
+                              @input="inputHandle"
+                              required/>
                     </div>
                     <br>
                     <div class="col-md-4">
@@ -66,39 +71,39 @@ export default {
      },
      data(){
          return{
-             data:{}
+             nome:'',
+             email:'',
+             password:''
          }
      },
+
+
+
 
      methods:{
          ...mapActions('Users',['postUsers']),
          ...mapGetters('Users',['message']),
          handleSubmit(){
 
-            //  const name = this.name;
-            //  const email  = this.email;
-            //  const password = this.password;
+             const name = this.nome;
+             const email  = this.email;
+             const password = this.password;
 
-            //  const data = {
-            //      name,
-            //      email,
-            //      password,
-            //      Acao
-            //  }
-
-            //  console.log(data);
-
+             const data = {
+                 name,
+                 email,
+                 password
+             }
 
 
             // chamando metodo store artigos vuex
-            //  this.storeArtigos(data);
+             this.postUsers(data);
+               if(this.message() === false){
+                   console.log('adad');
+                    localStorage.setItem('store',true);
+                    window.location.href  = 'http://localhost:8081/admin/users';
 
-            //    if(this.message() === false){
-            //        console.log('adad');
-            //         localStorage.setItem('store',true);
-            //         window.location.href  = 'http://localhost:8081/admin/user';
-
-            //     }
+                }
 
             return 'adad';
 
@@ -106,9 +111,27 @@ export default {
 
 
 
-         handleEmit(name){
-             console.log(name);
-         }
+        //  handleEmit(name){
+        //      console.log(name);
+        //  }
+
+            inputHandle(args){
+                const { target,nameInput }  = args;
+
+                switch (nameInput) {
+                    case 'name':
+                          this.nome =  target;
+                    break;
+
+                    case 'email':
+                          this.email =  target;
+                    break;
+
+                    case 'password':
+                          this.password =  target;
+                    break;
+                }
+            }
      }
 }
 </script>
