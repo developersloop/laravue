@@ -1,4 +1,8 @@
-const {getUsers} = require('../Function/users');
+import {
+         getUsers,
+         storeUsers
+        }
+        from '../Function/users';
 
 const USERS = 'USERS';
 
@@ -21,6 +25,11 @@ const actions = {
         getUsers()
                 .then(data => commit('USERS',data.data))
                 .catch(err => console.log(err))
+    },
+    postUsers({commit},{name,email}){
+          storeUsers(name,email)
+                                .then(response => console.log(response))
+                                .catch(err => console.log(err))
     }
 }
 

@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-require('laravel-mix-eslint');
+// require('laravel-mix-eslint');
 
 /*
  |--------------------------------------------------------------------------
@@ -12,13 +12,5 @@ require('laravel-mix-eslint');
  |
  */
 
-    mix.js('resources/js/app.js', 'public/js').eslint({
-        test: ['js', 'vue'], // will convert to /\.(js|vue)$/ or you can use /\.(js|vue)$/ by itself.
-        exclude: ['node_modules'],
-        loader: 'eslint-loader',
-        options:{
-            fix: false,
-            cache: false,
-        }
-    })
+    mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');

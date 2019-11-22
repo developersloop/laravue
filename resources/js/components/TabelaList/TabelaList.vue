@@ -189,8 +189,13 @@ export default {
                 if(busca  === ''){
                     return data;
                 }else{
+
                     return data.filter(item => {
-                         return item.titulo.toLowerCase().includes(busca.toLowerCase())
+                         if(busca){
+                               return item.titulo.toLowerCase().includes(busca.toLowerCase())
+                         } else {
+                             return false;
+                         }
                     })
                 }
           }

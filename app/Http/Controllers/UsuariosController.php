@@ -23,12 +23,12 @@ class UsuariosController extends Controller
 
     public function create()
     {
-         return views('Admin.users.create');
+         return view('Admin.users.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
+          dd($request->all());
     }
 
     public function edit()

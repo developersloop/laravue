@@ -18,11 +18,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function () {
-        Route::get('/search', 'ArtigosController@search');
-        Route::put('artigos/update/{id}', 'ArtigosController@update');
-        Route::post('artigos/store','ArtigosController@store');
-        Route::get('artigos/delete/{id}','ArtigosController@delete');
-        Route::get('artigos/show/{id}','ArtigosController@show');
+    Route::get('/search', 'ArtigosController@search');
+       Route::group(['prefix' => 'artigos'], function () {
+            Route::put('/update/{id}', 'ArtigosController@update');
+            Route::post('/store','ArtigosController@store');
+            Route::get('/delete/{id}','ArtigosController@delete');
+            Route::get('/show/{id}','ArtigosController@show');
 
-        Route::get('/users','UsersController@index');
+       });
+
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/','UsersController@index');
+        Route::post('/','UsersController@store');
+    });
 });

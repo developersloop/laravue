@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
- <Formulario action="{{ route('artigos.store') }}"  metodo="POST"/>
+ <Formulariouser
+  action="adad"
+  metodo="POST"/>
 @endsection
