@@ -2451,28 +2451,19 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
       details: false
     };
   },
-  created: function created() {
-    var a = {
-      ad: 'adad'
-    };
-  },
   mounted: function mounted() {
-    this.getMounted();
-    localStorage.setItem('store', this.store);
-    localStorage.setItem('env', this.env);
-    var id = document.getElementById('message');
+    this.getMounted(); //   localStorage.setItem('store',this.store);
+    //   localStorage.setItem('env',this.env);
+    //   var id = document.getElementById('message');
+
     this.err = localStorage.getItem('error');
 
     if (this.err) {
-      this.mss = localStorage.getItem('mensagem'); // esconde message apos 5 segundos
-
+      this.mss = localStorage.getItem('mensagem');
       setTimeout(function () {
         $('#message').hide();
       }, 2500);
     }
-
-    localStorage.removeItem('mensagem');
-    localStorage.removeItem('error');
   },
   methods: {
     getMounted: function getMounted() {
@@ -2636,17 +2627,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         name: name,
         email: email,
         password: password
-      }; // chamando metodo store artigos vuex
+      }; // implementar sistema de chamadas
 
       this.postUsers(data);
-
-      if (this.message() === false) {
-        console.log('adad');
-        localStorage.setItem('store', true);
-        window.location.href = 'http://localhost:8081/admin/users';
-      }
-
-      return 'adad';
+      if (this.message() != null) window.location.href = 'http://localhost:8081/admin/users';
     },
     //  handleEmit(name){
     //      console.log(name);
@@ -63317,7 +63301,7 @@ return jQuery;
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
- * @version 1.16.0
+ * @version 1.15.0
  * @license
  * Copyright (c) 2016 Federico Zivolo and contributors
  *
@@ -63339,17 +63323,16 @@ __webpack_require__.r(__webpack_exports__);
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined' && typeof navigator !== 'undefined';
+var isBrowser = typeof window !== 'undefined' && typeof document !== 'undefined';
 
-var timeoutDuration = function () {
-  var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
-  for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
-    if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
-      return 1;
-    }
+var longerTimeoutBrowsers = ['Edge', 'Trident', 'Firefox'];
+var timeoutDuration = 0;
+for (var i = 0; i < longerTimeoutBrowsers.length; i += 1) {
+  if (isBrowser && navigator.userAgent.indexOf(longerTimeoutBrowsers[i]) >= 0) {
+    timeoutDuration = 1;
+    break;
   }
-  return 0;
-}();
+}
 
 function microtaskDebounce(fn) {
   var called = false;
@@ -63467,17 +63450,6 @@ function getScrollParent(element) {
   }
 
   return getScrollParent(getParentNode(element));
-}
-
-/**
- * Returns the reference node of the reference object, or the reference object itself.
- * @method
- * @memberof Popper.Utils
- * @param {Element|Object} reference - the reference element (the popper will be relative to this)
- * @returns {Element} parent
- */
-function getReferenceNode(reference) {
-  return reference && reference.referenceNode ? reference.referenceNode : reference;
 }
 
 var isIE11 = isBrowser && !!(window.MSInputMethodContext && document.documentMode);
@@ -63788,8 +63760,8 @@ function getBoundingClientRect(element) {
 
   // subtract scrollbar size from sizes
   var sizes = element.nodeName === 'HTML' ? getWindowSizes(element.ownerDocument) : {};
-  var width = sizes.width || element.clientWidth || result.width;
-  var height = sizes.height || element.clientHeight || result.height;
+  var width = sizes.width || element.clientWidth || result.right - result.left;
+  var height = sizes.height || element.clientHeight || result.bottom - result.top;
 
   var horizScrollbar = element.offsetWidth - width;
   var vertScrollbar = element.offsetHeight - height;
@@ -63941,7 +63913,7 @@ function getBoundaries(popper, reference, padding, boundariesElement) {
   // NOTE: 1 DOM access here
 
   var boundaries = { top: 0, left: 0 };
-  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  var offsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
 
   // Handle viewport case
   if (boundariesElement === 'viewport') {
@@ -64069,7 +64041,7 @@ function computeAutoPlacement(placement, refRect, popper, reference, boundariesE
 function getReferenceOffsets(state, popper, reference) {
   var fixedPosition = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
-  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, getReferenceNode(reference));
+  var commonOffsetParent = fixedPosition ? getFixedPositionOffsetParent(popper) : findCommonOffsetParent(popper, reference);
   return getOffsetRectRelativeToArbitraryNode(reference, commonOffsetParent, fixedPosition);
 }
 
@@ -64331,7 +64303,7 @@ function destroy() {
 
   this.disableEventListeners();
 
-  // remove the popper if user explicitly asked for the deletion on destroy
+  // remove the popper if user explicity asked for the deletion on destroy
   // do not use `remove` because IE11 doesn't support it
   if (this.options.removeOnDestroy) {
     this.popper.parentNode.removeChild(this.popper);
@@ -68264,7 +68236,10 @@ var render = function() {
         ? _c(
             "div",
             {
-              staticClass: "alert alert-success",
+              class:
+                _vm.err == "true"
+                  ? "alert alert-danger"
+                  : "alert alert-success",
               attrs: { role: "alert", id: "message" }
             },
             [_vm._v("\n           " + _vm._s(_vm.mss) + "\n        ")]
@@ -82274,7 +82249,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mapActions", function() { return mapActions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNamespacedHelpers", function() { return createNamespacedHelpers; });
 /**
- * vuex v3.1.2
+ * vuex v3.1.1
  * (c) 2019 Evan You
  * @license MIT
  */
@@ -82596,7 +82571,6 @@ var Store = function Store (options) {
   this._modulesNamespaceMap = Object.create(null);
   this._subscribers = [];
   this._watcherVM = new Vue();
-  this._makeLocalGettersCache = Object.create(null);
 
   // bind commit and dispatch to self
   var store = this;
@@ -82829,14 +82803,12 @@ function resetStoreVM (store, state, hot) {
 
   // bind store public getters
   store.getters = {};
-  // reset local getters cache
-  store._makeLocalGettersCache = Object.create(null);
   var wrappedGetters = store._wrappedGetters;
   var computed = {};
   forEachValue(wrappedGetters, function (fn, key) {
     // use computed to leverage its lazy-caching mechanism
     // direct inline function use will lead to closure preserving oldVm.
-    // using partial to return function with only arguments preserved in closure environment.
+    // using partial to return function with only arguments preserved in closure enviroment.
     computed[key] = partial(fn, store);
     Object.defineProperty(store.getters, key, {
       get: function () { return store._vm[key]; },
@@ -82880,9 +82852,6 @@ function installModule (store, rootState, path, module, hot) {
 
   // register in namespace map
   if (module.namespaced) {
-    if (store._modulesNamespaceMap[namespace] && "development" !== 'production') {
-      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
-    }
     store._modulesNamespaceMap[namespace] = module;
   }
 
@@ -82891,13 +82860,6 @@ function installModule (store, rootState, path, module, hot) {
     var parentState = getNestedState(rootState, path.slice(0, -1));
     var moduleName = path[path.length - 1];
     store._withCommit(function () {
-      if (true) {
-        if (moduleName in parentState) {
-          console.warn(
-            ("[vuex] state field \"" + moduleName + "\" was overridden by a module with the same name at \"" + (path.join('.')) + "\"")
-          );
-        }
-      }
       Vue.set(parentState, moduleName, module.state);
     });
   }
@@ -82985,28 +82947,26 @@ function makeLocalContext (store, namespace, path) {
 }
 
 function makeLocalGetters (store, namespace) {
-  if (!store._makeLocalGettersCache[namespace]) {
-    var gettersProxy = {};
-    var splitPos = namespace.length;
-    Object.keys(store.getters).forEach(function (type) {
-      // skip if the target getter is not match this namespace
-      if (type.slice(0, splitPos) !== namespace) { return }
+  var gettersProxy = {};
 
-      // extract local getter type
-      var localType = type.slice(splitPos);
+  var splitPos = namespace.length;
+  Object.keys(store.getters).forEach(function (type) {
+    // skip if the target getter is not match this namespace
+    if (type.slice(0, splitPos) !== namespace) { return }
 
-      // Add a port to the getters proxy.
-      // Define as getter property because
-      // we do not want to evaluate the getters in this time.
-      Object.defineProperty(gettersProxy, localType, {
-        get: function () { return store.getters[type]; },
-        enumerable: true
-      });
+    // extract local getter type
+    var localType = type.slice(splitPos);
+
+    // Add a port to the getters proxy.
+    // Define as getter property because
+    // we do not want to evaluate the getters in this time.
+    Object.defineProperty(gettersProxy, localType, {
+      get: function () { return store.getters[type]; },
+      enumerable: true
     });
-    store._makeLocalGettersCache[namespace] = gettersProxy;
-  }
+  });
 
-  return store._makeLocalGettersCache[namespace]
+  return gettersProxy
 }
 
 function registerMutation (store, type, handler, local) {
@@ -83018,7 +82978,7 @@ function registerMutation (store, type, handler, local) {
 
 function registerAction (store, type, handler, local) {
   var entry = store._actions[type] || (store._actions[type] = []);
-  entry.push(function wrappedActionHandler (payload) {
+  entry.push(function wrappedActionHandler (payload, cb) {
     var res = handler.call(store, {
       dispatch: local.dispatch,
       commit: local.commit,
@@ -83026,7 +82986,7 @@ function registerAction (store, type, handler, local) {
       state: local.state,
       rootGetters: store.getters,
       rootState: store.state
-    }, payload);
+    }, payload, cb);
     if (!isPromise(res)) {
       res = Promise.resolve(res);
     }
@@ -83107,9 +83067,6 @@ function install (_Vue) {
  */
 var mapState = normalizeNamespace(function (namespace, states) {
   var res = {};
-  if ( true && !isValidMap(states)) {
-    console.error('[vuex] mapState: mapper parameter must be either an Array or an Object');
-  }
   normalizeMap(states).forEach(function (ref) {
     var key = ref.key;
     var val = ref.val;
@@ -83143,9 +83100,6 @@ var mapState = normalizeNamespace(function (namespace, states) {
  */
 var mapMutations = normalizeNamespace(function (namespace, mutations) {
   var res = {};
-  if ( true && !isValidMap(mutations)) {
-    console.error('[vuex] mapMutations: mapper parameter must be either an Array or an Object');
-  }
   normalizeMap(mutations).forEach(function (ref) {
     var key = ref.key;
     var val = ref.val;
@@ -83179,9 +83133,6 @@ var mapMutations = normalizeNamespace(function (namespace, mutations) {
  */
 var mapGetters = normalizeNamespace(function (namespace, getters) {
   var res = {};
-  if ( true && !isValidMap(getters)) {
-    console.error('[vuex] mapGetters: mapper parameter must be either an Array or an Object');
-  }
   normalizeMap(getters).forEach(function (ref) {
     var key = ref.key;
     var val = ref.val;
@@ -83212,9 +83163,6 @@ var mapGetters = normalizeNamespace(function (namespace, getters) {
  */
 var mapActions = normalizeNamespace(function (namespace, actions) {
   var res = {};
-  if ( true && !isValidMap(actions)) {
-    console.error('[vuex] mapActions: mapper parameter must be either an Array or an Object');
-  }
   normalizeMap(actions).forEach(function (ref) {
     var key = ref.key;
     var val = ref.val;
@@ -83260,21 +83208,9 @@ var createNamespacedHelpers = function (namespace) { return ({
  * @return {Object}
  */
 function normalizeMap (map) {
-  if (!isValidMap(map)) {
-    return []
-  }
   return Array.isArray(map)
     ? map.map(function (key) { return ({ key: key, val: key }); })
     : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
-}
-
-/**
- * Validate whether given map is valid or not
- * @param {*} map
- * @return {Boolean}
- */
-function isValidMap (map) {
-  return Array.isArray(map) || isObject(map)
 }
 
 /**
@@ -83312,7 +83248,7 @@ function getModuleByNamespace (store, helper, namespace) {
 var index_esm = {
   Store: Store,
   install: install,
-  version: '3.1.2',
+  version: '3.1.1',
   mapState: mapState,
   mapMutations: mapMutations,
   mapGetters: mapGetters,
@@ -83640,7 +83576,8 @@ var USERS = 'USERS';
 var MESSAGE = 'MESSAGE';
 var state = {
   users: [],
-  message: ''
+  message: '',
+  err: ''
 };
 var mutations = (_mutations = {}, _defineProperty(_mutations, USERS, function (state) {
   for (var _len = arguments.length, params = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -83656,9 +83593,8 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, USERS, function (s
     params[_key2 - 1] = arguments[_key2];
   }
 
-  state.message = params[0].error; // console.log(params);
-  // state.err = params[0].error;
-
+  state.message = params[0].message;
+  state.err = params[0].error;
   localStorage.setItem('mensagem', state.message);
   localStorage.setItem('error', state.err);
 }), _mutations);
@@ -83674,7 +83610,7 @@ var actions = {
   postUsers: function postUsers(_ref2, data) {
     var commit = _ref2.commit;
     Object(_Function_users__WEBPACK_IMPORTED_MODULE_0__["storeUsers"])(data).then(function (data) {
-      commit(MESSAGE, data.data);
+      commit('MESSAGE', data.data);
     })["catch"](function (err) {
       return console.log(err);
     });
@@ -83685,7 +83621,7 @@ var getters = {
     return state.users;
   },
   message: function message() {
-    return state.message;
+    return state.err;
   }
 };
 var Users = {
@@ -84856,8 +84792,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('Formulariouser', _Users_Fo
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/vine5/workspace/laravue/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/vine5/workspace/laravue/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/vitor/Documentos/workspace/laravue/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/vitor/Documentos/workspace/laravue/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ }),

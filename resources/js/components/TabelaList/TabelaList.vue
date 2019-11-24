@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="err" class="alert alert-success" role="alert" id="message">
+        <div v-if="err" v-bind:class="err == 'true' ? 'alert alert-danger' : 'alert alert-success'" role="alert" id="message">
            {{ mss }}
         </div>
         <!-- <Migalhas :lista="this.lista"/> -->
@@ -119,25 +119,20 @@ export default {
           }
       },
 
-      created(){
-          let a = {ad:'adad'}
-      },
 
       mounted(){
            this.getMounted();
-          localStorage.setItem('store',this.store);
-          localStorage.setItem('env',this.env);
-          var id = document.getElementById('message');
+        //   localStorage.setItem('store',this.store);
+        //   localStorage.setItem('env',this.env);
+        //   var id = document.getElementById('message');
           this.err = localStorage.getItem('error');
         if(this.err){
            this.mss = localStorage.getItem('mensagem');
-                // esconde message apos 5 segundos
                 setTimeout(function () {
                 $('#message').hide();
                 }, 2500);
         }
-        localStorage.removeItem('mensagem')
-        localStorage.removeItem('error');
+
       },
 
       methods:{

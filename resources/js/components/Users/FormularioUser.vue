@@ -97,16 +97,8 @@ export default {
 
 
             // implementar sistema de chamadas
-
-            //  this.postUsers(data);
-            //    if(this.message() === false){
-            //        console.log('adad');
-            //         localStorage.setItem('store',true);
-            //         window.location.href  = 'http://localhost:8081/admin/users';
-
-            //     }
-
-            // return 'adad';
+             this.postUsers(data);
+               if(this.message() != null) window.location.href  = 'http://localhost:8081/admin/users';
 
          },
 

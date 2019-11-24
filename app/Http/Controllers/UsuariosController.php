@@ -14,7 +14,7 @@ class UsuariosController extends Controller
                     ->get();
 
 
-         return view('Admin.users.manager',
+         return view('Admin.Users.manager',
                                     compact(
                                             'data'
                                             )
@@ -23,7 +23,7 @@ class UsuariosController extends Controller
 
     public function create()
     {
-         return view('Admin.users.create');
+         return view('Admin.Users.create');
     }
 
     public function store(Request $request)

@@ -10,7 +10,8 @@ const MESSAGE = 'MESSAGE';
 
 const state = {
    users:[],
-   message:''
+   message:'',
+   err:''
 }
 
 const mutations = {
@@ -22,9 +23,8 @@ const mutations = {
         });
    },
     [MESSAGE](state, ...params){
-        state.message = params[0].error;
-        // console.log(params);
-        // state.err = params[0].error;
+        state.message = params[0].message;
+        state.err = params[0].error;
         localStorage.setItem('mensagem',state.message);
         localStorage.setItem('error',state.err);
 
@@ -40,7 +40,7 @@ const actions = {
     postUsers({commit},data){
           storeUsers(data)
                                 .then(data => {
-                                    commit(MESSAGE,data.data);
+                                    commit('MESSAGE',data.data);
                                 })
                                 .catch(err => console.log(err))
     }
@@ -51,7 +51,7 @@ const getters = {
            return state.users;
      },
      message:() => {
-        return state.message;
+        return state.err;
    },
 }
 
