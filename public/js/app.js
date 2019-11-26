@@ -83782,7 +83782,7 @@ var mutations = (_mutations = {}, _defineProperty(_mutations, USERS, function (s
   }
 
   // localStorage.setItem('titles',JSON.stringify(params[0][0]));
-  console.log(params);
+  // console.log(params);
   params[0].items.forEach(function (element) {
     state.users.push(element);
   });

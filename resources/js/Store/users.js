@@ -19,7 +19,7 @@ const mutations = {
    [USERS](state, ...params){
 
         // localStorage.setItem('titles',JSON.stringify(params[0][0]));
-        console.log(params);
+        // console.log(params);
         params[0].items.forEach(element => {
             state.users.push(element)
         });
