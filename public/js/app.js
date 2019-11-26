@@ -2468,14 +2468,6 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     token: {
       type: String,
       required: true
-    },
-    store: {
-      type: String,
-      required: true
-    },
-    titles: {
-      type: Array,
-      required: true
     }
   },
   data: function data() {
@@ -2580,14 +2572,13 @@ var strings = __webpack_require__(/*! ../../Strings */ "./resources/js/Strings.j
     search: function search() {
       var busca = this.bc;
       var data = this.items;
-      this.rows = data != undefined ? data.length : '';
 
       if (busca === '') {
         return data;
       } else {
         return data.filter(function (item) {
           if (busca) {
-            return item.titulo.toLowerCase().includes(busca.toLowerCase());
+            return item.name.toLowerCase().includes(busca.toLowerCase());
           } else {
             return false;
           }

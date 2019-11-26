@@ -10,15 +10,8 @@ class UsuariosController extends Controller
 {
     public function index()
     {
-        $data = DB::table('users')
-                    ->get();
 
-
-         return view('Admin.Users.manager',
-                                    compact(
-                                            'data'
-                                            )
-                    );
+         return view('Admin.Users.manager');
     }
 
     public function create()
@@ -26,23 +19,7 @@ class UsuariosController extends Controller
          return view('Admin.Users.create');
     }
 
-    public function store(Request $request)
-    {
-          dd($request->all());
-    }
 
-    public function edit()
-    {
+    public function edit(){}
 
-    }
-
-    public function update()
-    {
-
-    }
-
-    public function delete()
-    {
-
-    }
 }
