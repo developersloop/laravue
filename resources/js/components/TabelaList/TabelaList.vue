@@ -18,54 +18,32 @@
             </div>
         </div>
         <br>
-          <b-table
-            id="my-table"
-            :items="search"
-            :per-page="per_page"
-            :current-page="current_page"
-            :fields="fields"
-            class="text-center"
-           >
-
-             <template v-slot:cell(Acao)="row">
-                  <div>
-                        <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(row.item.id)">Editar</button>
-                        <button class="btn btn-secondary btn-sm" v-on:click.prevent="Excluir(row.item.id)">Excluir</button>
-                        <button class="btn btn-secondary btn-sm" v-on:click="edit(row.item)">Details</button>
-                        <div v-if="obj" class="container">
-                            <b-modal v-model="details" title="Detalhes">
-                                 <p>
-                                     <b>ID:</b>
-                                     {{obj.id}}
-                                  </p>
-                                 <p>
-                                     <b>Título:</b>
-                                     {{obj.titulo}}
-                                 </p>
-                                 <p>
-                                     <b>Descrição:</b>
-                                     {{obj.descricao}}
-                                 </p>
-                            </b-modal>
-                        </div>
-                  </div>
-             </template>
-         </b-table>
-             <div v-if="rows > 1" style="display:flex; flex-flow:row wrap; justify-content:space-around; width:450px;">
-                 <div>
-                        <input class="form-control  mr-sm-2" type="text" ref="pag" placeholder="Enter page number" v-on:keyup.enter="changeCurrentPage()">
-                 </div>
-                 <div>
-                       <b-pagination
-                            v-model="current_page"
-                            :total-rows="rows"
-                            :per-page="per_page"
-                            aria-controls="my-table"
-                         ></b-pagination>
-                 </div>
-             </div>
-
-
+           <table class="table table-hover">
+                <thead>
+                    <tr class="text-center">
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Acao</th>
+                    </tr>
+                </thead>
+                <tbody>
+                     <tr class="text-center" v-for="users in search" :key="users.id">
+                          <td>{{users.id}}</td>
+                          <td>{{users.name}}</td>
+                          <td>{{users.email}}</td>
+                          <td>
+                              <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(users.id)">Editar</button>
+                              <button class="btn btn-secondary btn-sm" v-on:click.prevent="Excluir(users.id)">Excluir</button>
+                              <button class="btn btn-secondary btn-sm" v-on:click="edit(users)">Details</button>
+                         </td>
+                     </tr>
+                </tbody>
+           </table>
+            <Pagination
+                    :qtdItems="qtdItems"
+                    :numberChoice="numberChoice"
+                    @click="pg"/>
 </div>
 
 </template>
@@ -73,9 +51,14 @@
 <script>
 import _ from 'lodash';
 import axios from 'axios';
+import Pagination from '../Pagination/Pagination';
+import {getUsers} from '../../Function/users';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
 const strings  = require('../../Strings');
 export default {
+    components:{
+        Pagination,
+    },
     props:{
 
          criar:{
@@ -110,40 +93,48 @@ export default {
               err:'',
               itensShow:[],
               current_page: 1,
-              per_page: 2,
+              per_page: '',
               rows:'',
               fields:this.titles,
               obj:{},
               details:false,
-
+              lengthData:'',
+              increment:2,
+              qtdItems:0,
+              decrement:2,
+              numberChoice:1
           }
       },
 
 
       mounted(){
            this.getMounted();
-        //   localStorage.setItem('store',this.store);
-        //   localStorage.setItem('env',this.env);
-        //   var id = document.getElementById('message');
-          this.err = localStorage.getItem('error');
-        if(this.err){
-           this.mss = localStorage.getItem('mensagem');
-                setTimeout(function () {
-                $('#message').hide();
-                }, 2500);
-        }
+        //   this.err = localStorage.getItem('error');
+        // if(this.err){
+        //    this.mss = localStorage.getItem('mensagem');
+        //         setTimeout(function () {
+        //         $('#message').hide();
+        //         }, 2500);
+        // }
 
       },
 
       methods:{
+          ...mapActions('Users',['getAll']),
+          ...mapGetters('Users',['data']),
            getMounted(){
-               const store = this.$store;
-               const choiceStore = `${this.store}/`;
-               let getAll = store._actions[`${choiceStore}getAll`][0];
-               let getData = store.getters[`${choiceStore}data`];
-               let data = getAll();
-               const items = this.items;
-               this.items.push(getData);
+                getUsers(1)
+                                .then(data => {
+                                        localStorage.setItem('total',data.data.total);
+                                        localStorage.setItem('perPage',data.data.perPage)
+                                        
+                                        this.$set(this.$data,'items',data.data.items)
+                                })
+                                .catch(err => console.log(err))
+
+                                 this.qtdItems =  Math.round(parseInt(localStorage.getItem('total')) / parseInt(localStorage.getItem('perPage')));
+    
+                            console.log(this.qtdItems);
 
            },
 
@@ -157,29 +148,54 @@ export default {
 
            edit(obj = {}){this.obj = obj;this.details = true;},
 
-           changeCurrentPage(){
+        pg(str){
 
-               const count = Math.round(this.rows / this.per_page);
-               const val = this.$refs.pag.value;
+              if(str == 'next'){
+                   this.nextPrev(2);
+              }
+              else if(str == 'previous'){
+                   this.previousPrev();
+              } 
+              else{
+                  this.numberChoice = str;
+                  this.increment = str + 1;
+                  this.decrement = str - 1;
+                   getUsers(str)
+                                .then(data => {
+                                        this.$set(this.$data,'items',data.data.items)
+                                })
+                                .catch(err => console.log(err))
+              }
+        },
 
-               this.current_page = val;
-
-           },
-
+        nextPrev(inc){
+             this.numberChoice++;
+                getUsers(this.increment++)
+                                .then(data => {
+                                        this.$set(this.$data,'items',data.data.items)
+                                })
+                                .catch(err => console.log(err))
+        },
+        previousPrev(){
+                this.numberChoice--;
+                let decrement = --this.increment;
+                getUsers(--decrement)
+                                .then(data => {
+                                        this.$set(this.$data,'items',data.data.items)
+                                })
+                                .catch(err => console.log(err))
+        }
 
       },
       computed:{
 
-          title(){
-                this.fields = JSON.parse(localStorage.getItem('titles'));
-                return this.fields;
-          },
           search:function(){
               let busca = this.bc;
-              let data = this.items[0];
+              let data = this.items;
 
 
                 this.rows = data != undefined ? data.length : '';
+
 
                 if(busca  === ''){
                     return data;
@@ -194,6 +210,13 @@ export default {
                     })
                 }
           }
+      },
+      watch:{
+          increment(val){
+               return val;
+          }
       }
 }
 </script>
+
+</style>

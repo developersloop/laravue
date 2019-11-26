@@ -10,6 +10,7 @@ const MESSAGE = 'MESSAGE';
 
 const state = {
    users:[],
+   all:[],
    message:'',
    err:''
 }
@@ -17,8 +18,8 @@ const state = {
 const mutations = {
    [USERS](state, ...params){
 
-        localStorage.setItem('titles',JSON.stringify(params[0][0]));
-        params[0].forEach(element => {
+        // localStorage.setItem('titles',JSON.stringify(params[0][0]));
+        params[0].items.forEach(element => {
             state.users.push(element)
         });
    },
@@ -32,9 +33,11 @@ const mutations = {
 }
 
 const actions = {
-    getAll({commit}){
-        getUsers()
-                .then(data => commit('USERS',data.data))
+    getAll({commit},id){
+        getUsers(id)
+                .then(data => {
+                    commit('USERS',data.data)
+                })
                 .catch(err => console.log(err))
     },
     postUsers({commit},data){

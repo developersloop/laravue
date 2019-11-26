@@ -16,13 +16,19 @@ class UsersController{
     {
         $users = [];
 
-        $users = DB::table('users')
+        $data = DB::table('users')
                      ->select('id','name','email')
-                     ->get();
+                     ->paginate(2);
 
 
+        $users = array(
+            'total' => $data->total(),
+            'currentPage' => $data->currentPage(),
+            'items' => $data->items(),
+            'perPage' => $data->perPage(),
+        );
 
-        return $users->toArray();
+        return $users;
     }
 
     public function store(UsersRequest $request)
@@ -38,7 +44,6 @@ class UsersController{
                 'message' => $th->getMessage()
             ];
         }
-
     }
 }
 
