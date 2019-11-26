@@ -28,6 +28,7 @@ class UsersController{
             'perPage' => $data->perPage(),
         );
 
+        // dd($users);
         return $users;
     }
 
