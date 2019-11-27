@@ -18,8 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['namespace' => 'Api'], function () {
-    Route::get('/search', 'ArtigosController@search');
        Route::group(['prefix' => 'artigos'], function () {
+            Route::get('/', 'ArtigosController@index');
             Route::put('/update/{id}', 'ArtigosController@update');
             Route::post('/store','ArtigosController@store');
             Route::get('/delete/{id}','ArtigosController@delete');

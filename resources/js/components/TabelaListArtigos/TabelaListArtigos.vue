@@ -29,11 +29,11 @@
                                     />
                                </span>
                         </th>
-                        <th>Name
+                        <th>Titulo
                                 <font-awesome-icon 
                                   icon="caret-down" />
                         </th>
-                        <th>Email
+                        <th>Descrição
                                 <font-awesome-icon 
                                   icon="caret-down" />
                         </th>
@@ -41,14 +41,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                     <tr class="text-center" v-for="users in search" :key="users.id">
-                          <td>{{users.id}}</td>
-                          <td>{{users.name}}</td>
-                          <td>{{users.email}}</td>
+                     <tr class="text-center" v-for="artigos in search" :key="artigos.id">
+                          <td>{{artigos.id}}</td>
+                          <td>{{artigos.titulo}}</td>
+                          <td>{{artigos.descricao}}</td>
                           <td>
-                              <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(users.id)">Editar</button>
-                              <button class="btn btn-secondary btn-sm" v-on:click.prevent="Excluir(users.id)">Excluir</button>
-                              <button class="btn btn-secondary btn-sm" v-on:click="edit(users)">Details</button>
+                              <button class="btn btn-secondary btn-sm" v-on:click="dispatchEdit(artigos.id)">Editar</button>
+                              <button class="btn btn-secondary btn-sm" v-on:click.prevent="Excluir(artigos.id)">Excluir</button>
+                              <button class="btn btn-secondary btn-sm" v-on:click="edit(artigos)">Details</button>
                          </td>
                      </tr>
                 </tbody>
@@ -65,7 +65,7 @@
 import _ from 'lodash';
 import axios from 'axios';
 import Pagination from '../Pagination/Pagination';
-import {getUsers} from '../../Function/users';
+import {getArtigos} from '../../Function/artigos';
 import { mapActions, mapMutation,mapGetters } from 'vuex';
 const strings  = require('../../Strings');
 export default {
@@ -125,10 +125,10 @@ export default {
       },
 
       methods:{
-          ...mapActions('Users',['getAll']),
-          ...mapGetters('Users',['data']),
+          ...mapActions('Artigos',['getArtigos']),
+          ...mapGetters('Artigos',['data']),
            getMounted(){
-                getUsers(1)
+                getArtigos(1)
                                 .then(data => {
                                         localStorage.setItem('total',data.data.total);
                                         localStorage.setItem('perPage',data.data.perPage)
@@ -165,7 +165,7 @@ export default {
                   this.numberChoice = str;
                   this.increment = str + 1;
                   this.decrement = str - 1;
-                   getUsers(str)
+                   getArtigos(str)
                                 .then(data => {
                                         this.$set(this.$data,'items',data.data.items)
                                 })
@@ -175,7 +175,7 @@ export default {
 
         nextPrev(inc){
              this.numberChoice++;
-                getUsers(this.increment++)
+                getArtigos(this.increment++)
                                 .then(data => {
                                         this.$set(this.$data,'items',data.data.items)
                                 })
@@ -184,7 +184,7 @@ export default {
         previousPrev(){
                 this.numberChoice--;
                 let decrement = --this.increment;
-                getUsers(--decrement)
+                getArtigos(--decrement)
                                 .then(data => {
                                         this.$set(this.$data,'items',data.data.items)
                                 })
@@ -211,7 +211,7 @@ export default {
 
                     return data.filter(item => {
                          if(busca){
-                               return item.name.toLowerCase().includes(busca.toLowerCase())
+                               return item.titulo.toLowerCase().includes(busca.toLowerCase())
                          } else {
                              return false;
                          }

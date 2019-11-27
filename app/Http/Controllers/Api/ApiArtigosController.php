@@ -10,17 +10,23 @@ use Carbon\Carbon;
 
 class ArtigosController {
 
-    public function search()
+    public function index()
     {
-        $artigos = [];
-        $artigos = DB::table('artigos')
+        $data = DB::table('artigos')
                    ->select('id','titulo','descricao')
                    ->whereNull('deleted_at')
-                   ->get();
+                   ->paginate(2);
 
-                return $artigos->toArray();
+        
+      $artigos = array(
+                    'total' => $data->total(),
+                    'currentPage' => $data->currentPage(),
+                    'items' => $data->items(),
+                    'perPage' => $data->perPage(),
+                );
+        
 
-
+        return $artigos;
 
         // return response()->json($artigos);
     }

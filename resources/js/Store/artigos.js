@@ -33,12 +33,11 @@ const mutations = {
 }
 
 const actions = {
-    getAll({commit}){
-      getArtigos()
+    getArtigos({commit},id){
+      getArtigos(id)
       .then(response => {
-        //   console.log(response.data);
-                       {commit(ARTIGOS,response.data)}
-                })
+                        commit(ARTIGOS,response.data)
+               })
       .catch(function(err) {
         console.log('Fetch Error :-S', err);
       });
