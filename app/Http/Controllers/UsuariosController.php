@@ -20,6 +20,17 @@ class UsuariosController extends Controller
     }
 
 
-    public function edit(){}
+    public function edit($id)
+    {
+     $data = DB::table('users')
+                ->where('id',$id)
+                ->get();
+
+     return view('Admin.Users.edit',
+                                    compact(
+                                             'data'
+                                           )
+                );     
+    }
 
 }

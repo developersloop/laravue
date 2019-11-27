@@ -28,15 +28,17 @@ import {getUsers} from '../../Function/users';
     export default {
        props:{
               numberChoice:{
-                //    type:Number,
                    required:true
               },
               qtdItems:{type:Number,required:true}
         },
        data(){
            return {
-                
+                number:'',
+                qtd:''
            }
        },
+
+       
     }
 </script>

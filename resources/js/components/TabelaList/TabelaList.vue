@@ -144,7 +144,7 @@ export default {
            },
 
            dispatchEdit(id){
-               window.location.href = `${this.env}/${id}/edit`
+               window.location.href = `${this.env}/edit/${id}`
            },
 
            Excluir(index){

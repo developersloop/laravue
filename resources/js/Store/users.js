@@ -1,6 +1,7 @@
 import {
          getUsers,
-         storeUsers
+         storeUsers,
+         updateUsers
         }
         from '../Function/users';
 
@@ -47,6 +48,10 @@ const actions = {
                                     commit('MESSAGE',data.data);
                                 })
                                 .catch(err => console.log(err))
+    },
+
+    usersUpdate({commit},data){
+        updateUsers(data);          
     }
 }
 

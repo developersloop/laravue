@@ -28,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'admin/users'], function () {
         Route::get('/','UsuariosController@index')->name('users.manager');
+        Route::get('/edit/{id}','UsuariosController@edit');
         Route::get('/create','UsuariosController@create')->name('users.create');
 
     });

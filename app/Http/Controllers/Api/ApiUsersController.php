@@ -46,6 +46,24 @@ class UsersController{
             ];
         }
     }
+
+    public function update($id, UsersRequest $request)
+    {
+        $inputs = $request->validated();
+        try {
+                $user = User::find($id)
+                              ->update($inputs);
+                 return [
+                            'erro' => false, 
+                            'message' => 'Usário editado com sucesso.'
+                        ];
+        } catch (\Throwable $th) {
+            return [
+                        'erro' => false, 
+                        'message' => "${th}"
+                   ];
+        }
+    }
 }
 
 

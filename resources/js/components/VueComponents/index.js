@@ -11,7 +11,8 @@ import Migalhas from '../Migalhas/Migalhas.vue';
 import Formulario  from '../Formulario/Formulario.vue';
 import FormularioUser from '../Users/FormularioUser.vue';
 // import FormularioArtigos from '../Formularios/Formulario.vue';
-import Editar from '../Crud/Edit.vue';
+// import Editar from '../Crud/Edit.vue';
+import Editar from '../Users/EditUser.vue'
 import Details from '../Details/details.vue';
 import Input from '../Input/Input.vue';
 import Label from '../Label/Label.vue';
@@ -22,12 +23,13 @@ export const Componets = [
                         Vue.component('Painel',Painel),
                         Vue.component('Card',Card),
                         Vue.component('Grid',Grid),
-                        // Vue.component('List',List),
+                        Vue.component('List',List),
                         Vue.component('Lista',Lista),
                         Vue.component('Migalhas',Migalhas),
                         Vue.component('Formulario',Formulario),
                         // Vue.component('FormularioArtigos',FormularioArtigos),
                         Vue.component('Formulariouser',FormularioUser),
+                        // Vue.component('Editar',Editar),
                         Vue.component('Editar',Editar),
                         Vue.component('Details',Details),
                         Vue.component('Input',Input),

@@ -5,6 +5,7 @@
                  class="form-control"
                  :name="name"
                  :placeholder="place"
+                 :value="val"
                  @input="$emit('input', {target:$event.target.value,nameInput:name})"
                  />
 
